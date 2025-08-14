@@ -1,0 +1,9 @@
+.login-page {
+  background: var(--gradient-cerulean-lilas) !important;
+}
+
+.separator::before {
+  content: '•';
+  margin: 0 8px;
+  color: #888;
+}

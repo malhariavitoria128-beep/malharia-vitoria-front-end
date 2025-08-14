@@ -1,0 +1,5 @@
+.login-page {
+  height: 100vh;
+  background: var(--gradient-cerulean-lilas) !important;
+  padding: 1rem;
+}
