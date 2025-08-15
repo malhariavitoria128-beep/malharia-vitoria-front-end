@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ApiResponse } from '../../core/models/api-response';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class Login implements OnInit{
 
   loginForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -50,15 +51,8 @@ logarService(request: LoginResquest) {
 
   this.authService.login(request).subscribe({
     next: (usuario: UsuarioAutenticado) => {
-      console.log('Usuário autenticado:', usuario);
+      this.toastr.success(`Usuário ${usuario.email} logado`, "Sucesso");
       this.router.navigate(['/']);
-    },
-    error: (err: ApiResponse<null>) => {
-      // Aqui, err já vem padronizado pelo interceptor
-      console.error('Erro ao logar:', err);
-
-      // Se quiser exibir no componente (opcional, já mostra no interceptor)
-      // this.toastr.error(err.message, 'Erro de Login');
     }
   });
 }

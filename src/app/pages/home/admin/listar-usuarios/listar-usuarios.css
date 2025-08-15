@@ -152,6 +152,15 @@
   transform: scale(1.2);
 }
 
+.action-icons .bi-check-circle {
+  color: #2cc04c;
+}
+
+.action-icons .bi-check-circle:hover {
+  color: #218331;
+  transform: scale(1.2);
+}
+
 
 @media (max-width: 500px) {
   /* Botão flutuante */

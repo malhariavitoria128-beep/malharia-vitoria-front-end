@@ -1,7 +1,11 @@
-import { NgModule, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { NgModule, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
+
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+registerLocaleData(localePt);
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from '../app/app-routing.module';
@@ -14,6 +18,8 @@ import { AccessDenied } from './components/access-denied/access-denied';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { GlobalInterceptor } from './core/interceptor/global.interceptor';
 import { ToastrModule } from 'ngx-toastr';
+import { getPtBrPaginatorIntl } from './providers/paginator-pt-br';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -35,6 +41,8 @@ import { ToastrModule } from 'ngx-toastr';
     provideHttpClient(withInterceptorsFromDi()),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
+    { provide: MatPaginatorIntl, useValue: getPtBrPaginatorIntl() },
+     { provide: LOCALE_ID, useValue: 'pt-BR' },
      provideLottieOptions({
       player: () => player // usando import direto
     }),

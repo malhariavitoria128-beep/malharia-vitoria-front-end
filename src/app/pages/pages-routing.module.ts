@@ -32,7 +32,7 @@ const routes: Routes = [
   loadChildren: () =>
     import('../pages/home/admin/admin-module').then(m => m.AdminModule),
   canActivate: [RoleGuard],
-  data: { roles: ['Admin'] }
+  data: { roles: ['Administrador'] }
 }
     ]
   }

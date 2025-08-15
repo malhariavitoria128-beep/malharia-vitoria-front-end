@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { RegisterResquest } from '../../core/models/login/login.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +15,7 @@ export class Register {
 
   registerForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {}
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -49,7 +50,7 @@ export class Register {
   registrarService(request: RegisterResquest) {
     this.authService.register(request).subscribe({
       next: (res) => {
-        console.log('Usuário registrado:', res.message);
+        this.toastr.success(res.message, "Sucesso");
         this.router.navigate(['/login']);
       },
       error: (err) => {

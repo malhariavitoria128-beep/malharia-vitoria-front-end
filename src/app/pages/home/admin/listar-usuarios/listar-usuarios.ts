@@ -1,27 +1,15 @@
-import { Component, ViewChild } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-
-export interface UserData {
-  position: number;
-  name: string;
-  role: string;
-  email: string;
-  mobile: string;
-  date: string;
-  salary: number;
-  projects: number;
-  avatar: string;
-}
-
-const USER_DATA: UserData[] = [
-  { position: 1, name: 'Johnathan Deo', role: 'Seo Expert', email: 'r@gmail.com', mobile: '9786838', date: 'Thursday, January 2, 2020', salary: 12000, projects: 10, avatar: 'https://i.pravatar.cc/40?img=1' },
-  { position: 2, name: 'Mark Zukerburg', role: 'Web Developer', email: 'mark@gmail.com', mobile: '8786838', date: 'Thursday, April 2, 2020', salary: 12000, projects: 10, avatar: 'https://i.pravatar.cc/40?img=2' },
-  { position: 3, name: 'Sam Smith', role: 'Web Designer', email: 'sam@gmail.com', mobile: '7786838', date: 'Sunday, February 2, 2020', salary: 12000, projects: 10, avatar: 'https://i.pravatar.cc/40?img=3' },
-  { position: 4, name: 'John Deo', role: 'Tester', email: 'john@gmail.com', mobile: '8786838', date: 'Monday, March 2, 2020', salary: 12000, projects: 11, avatar: 'https://i.pravatar.cc/40?img=4' },
-  { position: 5, name: 'Genilia', role: 'Actor', email: 'genilia@gmail.com', mobile: '8786838', date: 'Saturday, May 2, 2020', salary: 12000, projects: 19, avatar: 'https://i.pravatar.cc/40?img=5' }
-];
-
+import { Usuario } from '../../../../core/models/usuario/usuario.model';
+import { Subject, take, takeUntil } from 'rxjs';
+import { MatSort } from '@angular/material/sort';
+import { UsuarioService } from '../../../../services/usuario.service';
+import { ApiResponse } from '../../../../core/models/api-response';
+import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material/dialog';
+import { ComfirmDeleteDialog } from '../../../../components/layout/comfirm-delete-dialog/comfirm-delete-dialog';
 
 @Component({
   selector: 'app-listar-usuarios',
@@ -29,30 +17,105 @@ const USER_DATA: UserData[] = [
   templateUrl: './listar-usuarios.html',
   styleUrl: './listar-usuarios.css'
 })
-export class ListarUsuarios {
+export class ListarUsuarios implements OnInit, OnDestroy, AfterViewInit{
 
-  displayedColumns: string[] = ['name', 'email', 'mobile', 'date', 'salary', 'projects', 'actions'];
-  dataSource = new MatTableDataSource<UserData>(USER_DATA);
+  displayedColumns: string[] = ['nome', 'email', 'role', 'createdAt', 'isApproved', 'actions'];
+  dataSource = new MatTableDataSource<Usuario>([]);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('deleteModal') deleteModal!: TemplateRef<any>; // Referência ao template
+  selectedUser: any; // Armazenará o usuário selecionado
 
-  ngOnInit(): void {}
+  private destroy$ = new Subject<void>();
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+  constructor(private usuarioService: UsuarioService, private toastr: ToastrService, private dialog: MatDialog,) {}
+
+  ngOnInit(): void {
+    this.carregarUsuarios();
+    this.configurarFiltro();
   }
 
-  applyFilter(event: Event) {
-  const filterValue = (event.target as HTMLInputElement).value;
-  this.dataSource.filter = filterValue.trim().toLowerCase();
+  ngAfterViewInit() {
+    this.configurarDataSource();
+  }
+
+  carregarUsuarios() {
+    this.usuarioService.buscarUsuariosPendentes()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (usuarios) => {
+          this.dataSource.data = usuarios;
+          this.configurarDataSource();
+        }
+      });
+  }
+
+  private configurarDataSource() {
+    if (this.paginator) {
+      this.dataSource.paginator = this.paginator;
+    }
+    if (this.sort) {
+      this.dataSource.sort = this.sort;
+    }
+  }
+
+  configurarFiltro() {
+    this.dataSource.filterPredicate = (data: Usuario, filter: string) => {
+      const search = filter.trim().toLowerCase();
+      return (
+        (data.nome?.toLowerCase().includes(search) ?? false) ||
+        (data.email?.toLowerCase().includes(search) ?? false) ||
+        (data.role?.toLowerCase().includes(search) ?? false)
+      );
+    };
+  }
+
+  aplicarFiltro(event: Event): void {
+    const valor = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = valor.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  aprovar(usuarioId: string) {
+    this.usuarioService.autorizarUsuario(usuarioId)
+      .pipe(
+        take(1),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (res: any) => {
+          this.toastr.success(res.message, "Sucesso");
+          this.carregarUsuarios();
+        }
+      });
+  }
+
+deletar(userId: string, userName: string) {
+  const dialogRef = this.dialog.open(ComfirmDeleteDialog, { // Corrigido o nome do componente
+    width: '450px',
+    autoFocus: false, // Desativa o auto-foco
+    data: { userName: userName },
+    disableClose: true
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      this.usuarioService.deletarUsuario(userId).subscribe({
+        next: (res) => {
+          this.toastr.success(res.message);
+          this.carregarUsuarios(); // Removida a vírgula incorreta
+        }
+      });
+    }
+  });
 }
 
-onEdit() {
-
-}
-
-onDelete() {
-
-}
-
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -6,7 +6,7 @@ import { ListarUsuarios } from './listar-usuarios/listar-usuarios';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -20,7 +20,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     AdminRoutingModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatTooltipModule
   ]
 })
 export class AdminModule { }

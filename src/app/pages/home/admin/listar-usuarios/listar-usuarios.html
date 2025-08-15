@@ -4,71 +4,65 @@
   <div class="top-bar">
     <div class="search-box">
       <i class="bi bi-search"></i>
-      <input type="text" placeholder="Search User" (keyup)="applyFilter($event)">
+      <input type="text" placeholder="Buscar usuário..." (keyup)="aplicarFiltro($event)">
     </div>
     <button type="button" class="btn btn-outline-info">Adicionar Usuário</button>
   </div>
 
   <!-- Container da tabela -->
   <div class="table-card">
-    <table mat-table [dataSource]="dataSource" class="custom-table">
-
-      <!-- # -->
+    <table mat-table [dataSource]="dataSource" matSort class="custom-table">
 
       <!-- Nome -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
         <td mat-cell *matCellDef="let element">
-          <div class="user-cell">
-            <img class="avatar" [src]="element.avatar" alt="{{element.name}}">
-            <div>
-              <strong>{{element.name}}</strong>
-              <div class="subtitle">{{element.role}}</div>
-            </div>
-          </div>
+          <strong>{{ element.nome }}</strong>
         </td>
       </ng-container>
 
       <!-- Email -->
       <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef> Email </th>
-        <td mat-cell *matCellDef="let element">{{element.email}}</td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
       </ng-container>
 
-      <!-- Mobile -->
-      <ng-container matColumnDef="mobile">
-        <th mat-header-cell *matHeaderCellDef> Mobile </th>
-        <td mat-cell *matCellDef="let element">{{element.mobile}}</td>
+      <!-- Role -->
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Função </th>
+        <td mat-cell *matCellDef="let element">{{ element.role }}</td>
       </ng-container>
 
-      <!-- Date -->
-      <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef> Date of Joining </th>
-        <td mat-cell *matCellDef="let element">{{element.date}}</td>
+      <!-- Data de criação -->
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Data de Criação </th>
+        <td mat-cell *matCellDef="let element">{{ element.createdAt | date:'dd/MM/yyyy' }}</td>
       </ng-container>
 
-      <!-- Salary -->
-      <ng-container matColumnDef="salary">
-        <th mat-header-cell *matHeaderCellDef> Salary </th>
-        <td mat-cell *matCellDef="let element">{{element.salary}}</td>
-      </ng-container>
-
-      <!-- Projects -->
-      <ng-container matColumnDef="projects">
-        <th mat-header-cell *matHeaderCellDef> Projects </th>
-        <td mat-cell *matCellDef="let element">{{element.projects}}</td>
+      <ng-container matColumnDef="isApproved">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.isApproved; else pending" class="badge bg-success text-white">
+            <i class="bi bi-person-check"></i> Aprovado
+          </span>
+          <ng-template #pending>
+            <span class="badge bg-warning text-white">
+              <i class="bi bi-person"></i> Aguardando
+            </span>
+          </ng-template>
+        </td>
       </ng-container>
 
       <!-- Ações -->
-<ng-container matColumnDef="actions">
-  <th mat-header-cell *matHeaderCellDef> Action </th>
-  <td mat-cell *matCellDef="let element">
-    <div class="action-icons">
-      <i class="bi bi-pen" (click)="onEdit()"></i>
-      <i class="bi bi-trash3" (click)="onDelete()"></i>
-    </div>
-  </td>
-</ng-container>
+       <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="action-icons">
+          <i class="bi bi-pen" [matTooltip]="'Editar'" matTooltipPosition="above"></i>
+          <i class="bi bi-trash3"  [matTooltip]="'Deletar'" matTooltipPosition="above" (click)="deletar(element.userId, element.nome)"></i>
+          <i class="bi-check-circle"  [matTooltip]="'Aprovar'" matTooltipPosition="above" (click)="aprovar(element.userId)"></i>
+        </div> </td>
+      </ng-container>
 
       <!-- Linhas -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -76,7 +70,12 @@
 
     </table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <!-- Paginador -->
+    <mat-paginator
+    [pageSize]="10"
+      [pageSizeOptions]="[10, 20]"
+      showFirstLastButtons>
+    </mat-paginator>
   </div>
 
 </div>

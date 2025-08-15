@@ -19,7 +19,7 @@ export class Navbar {
   ngOnInit(): void {
     this.authService.usuario$.subscribe(user => {
       this.usuario = user;
-      this.isAdmin = this.authService.hasRole('Admin');
+      this.isAdmin = this.authService.hasRole('Administrador');
     });
   }
 
