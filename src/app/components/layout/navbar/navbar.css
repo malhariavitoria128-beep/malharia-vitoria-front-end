@@ -7,3 +7,10 @@
   margin: 0 8px;
   color: #888;
 }
+
+.dropdown-item {
+  cursor: pointer;
+}
+
+/* Custom CSS for tooltip */
+

@@ -3,7 +3,21 @@
     <h3 class="text-center mb-4">
       <img src="../../../assets/logo.svg" alt="Logo" style="height: 60px;">
     </h3>
-    <h3 class="text-center mb-4">Cadastro</h3>
+    <h3 class="text-center mb-1">Malharia Vitória</h3>
+    <h4 class="text-center mb-4">Cadastro</h4>
+    <div class="mb-3">
+      <label for="email" class="form-label">Nome</label>
+      <input
+        id="nome"
+        type="text"
+        class="form-control"
+        formControlName="nome"
+        [class.is-valid]="registerForm.get('nome')?.valid && registerForm.get('nome')?.touched"
+        [class.is-invalid]="registerForm.get('nome')?.invalid && registerForm.get('nome')?.touched"
+        placeholder="Digite seu nome"/>
+      <div class="valid-feedback">Ok</div>
+      <div class="invalid-feedback">Nome obrigatório e deve ser válido</div>
+    </div>
 
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>

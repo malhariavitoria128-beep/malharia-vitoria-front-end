@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
-import { JwtPayload, LoginRegisterResquest, LoginResponse, UsuarioAutenticado } from '../core/models/login/login.model';
+import { JwtPayload, RegisterResquest, LoginResquest, LoginResponse, UsuarioAutenticado, NewPassword } from '../core/models/login/login.model';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '../../environments/environments';
+import { ChangePassword } from '../auth/change-password/change-password';
+import { ApiResponse } from '../core/models/api-response';
 
 const TOKEN_KEY = 'app_token';
 
@@ -35,7 +37,7 @@ export class AuthService {
   }
 }
 
-  login(request: LoginRegisterResquest): Observable<UsuarioAutenticado> {
+  login(request: LoginResquest): Observable<UsuarioAutenticado> {
     return this.http.post<LoginResponse>(`${this.baseUrl}Auth/login`, request).pipe(
       tap(res => {
         this.setToken(res.token);
@@ -46,7 +48,7 @@ export class AuthService {
     );
   }
 
-  register(request: LoginRegisterResquest): Observable<{ message: string }> {
+  register(request: RegisterResquest): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(`${this.baseUrl}Auth/register`, request);
   }
 
@@ -86,6 +88,10 @@ export class AuthService {
 
   isUserApproved(): boolean {
     return !!this.usuarioSubject.value?.isApproved;
+  }
+
+  changePassword(request: NewPassword): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(`${this.baseUrl}Auth/password`, request);
   }
 
 }

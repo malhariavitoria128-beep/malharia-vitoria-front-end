@@ -8,6 +8,7 @@ import { NotAproved } from '../components/not-aproved/not-aproved';
 import { Register } from './register/register';
 import { provideLottieOptions, LottieComponent } from 'ngx-lottie';
 import player from 'lottie-web';
+import { ChangePassword } from './change-password/change-password';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import player from 'lottie-web';
     Login,
 
     Register,
+    ChangePassword
 
 
   ],

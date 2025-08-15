@@ -1,4 +1,9 @@
 /* Aplica padding e espaçamento global */
+
+body {
+  background-color: #f0f7ff;
+}
+
 form {
   background: white;
   padding: 2rem;
@@ -26,3 +31,6 @@ form button {
 :root {
   --gradient-cerulean-lilas: linear-gradient(135deg, #2a9df4 0%, #b399ff 100%);
 }
+
+
+

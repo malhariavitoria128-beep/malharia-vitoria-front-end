@@ -1,5 +1,11 @@
 
-export interface LoginRegisterResquest {
+export interface LoginResquest {
+  email: string;
+  password: string;
+}
+
+export interface RegisterResquest {
+  nome: string;
   email: string;
   password: string;
 }
@@ -13,6 +19,10 @@ export interface UsuarioAutenticado {
   email: string;
   roles: string[];
   isApproved: boolean;
+}
+
+export interface NewPassword {
+  newPassword: string
 }
 
 export interface JwtPayload {

@@ -1,4 +1,4 @@
-import { LoginRegisterResquest, UsuarioAutenticado } from './../../core/models/login/login.model';
+import { LoginResquest, UsuarioAutenticado } from './../../core/models/login/login.model';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -37,7 +37,7 @@ export class Login implements OnInit{
       });;
       return;
     }
-    const request: LoginRegisterResquest = {
+    const request: LoginResquest = {
       email: this.loginForm.value.email,
       password: this.loginForm.value.password
     };
@@ -45,7 +45,7 @@ export class Login implements OnInit{
     this.logarService(request);
   }
 
-logarService(request: LoginRegisterResquest) {
+logarService(request: LoginResquest) {
   console.log("Aqui: ", request);
 
   this.authService.login(request).subscribe({

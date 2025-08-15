@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { LoginRegisterResquest, UsuarioAutenticado } from '../../core/models/login/login.model';
-import { ApiResponse } from '../../core/models/api-response';
+import { RegisterResquest } from '../../core/models/login/login.model';
 
 @Component({
   selector: 'app-register',
@@ -24,7 +23,8 @@ export class Register {
   initializeForm() {
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', Validators.required],
+      nome: ['', Validators.required],
     });
   }
 
@@ -38,26 +38,27 @@ export class Register {
       return;
     }
 
-    const request: LoginRegisterResquest = {
+    const request: RegisterResquest = {
       email: this.registerForm.value.email,
-      password: this.registerForm.value.password
+      password: this.registerForm.value.password,
+      nome: this.registerForm.value.nome
     };
     this.registrarService(request);
   }
 
-  registrarService(request: LoginRegisterResquest) {
-  this.authService.register(request).subscribe({
-    next: (res) => {
-      console.log('Usuário registrado:', res.message);
-      this.router.navigate(['/login']);
-    },
-    error: (err) => {
-      // err.error contém o corpo da resposta do backend
-      const detalhes = err.error?.details;
-      console.error('Erro no registro:', detalhes);
-      // Mostrar mensagem para usuário
-    }
-  });
-}
+  registrarService(request: RegisterResquest) {
+    this.authService.register(request).subscribe({
+      next: (res) => {
+        console.log('Usuário registrado:', res.message);
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        // err.error contém o corpo da resposta do backend
+        const detalhes = err.error?.details;
+        console.error('Erro no registro:', detalhes);
+        // Mostrar mensagem para usuário
+      }
+    });
+  }
 
 }
