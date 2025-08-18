@@ -3,13 +3,14 @@ import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } f
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Usuario } from '../../../../core/models/usuario/usuario.model';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Observable, Subject, take, takeUntil } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { UsuarioService } from '../../../../services/usuario.service';
 import { ApiResponse } from '../../../../core/models/api-response';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { ComfirmDeleteDialog } from '../../../../components/layout/comfirm-delete-dialog/comfirm-delete-dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-listar-usuarios',
@@ -19,6 +20,7 @@ import { ComfirmDeleteDialog } from '../../../../components/layout/comfirm-delet
 })
 export class ListarUsuarios implements OnInit, OnDestroy, AfterViewInit{
 
+  filtro!: string;
   displayedColumns: string[] = ['nome', 'email', 'role', 'createdAt', 'isApproved', 'actions'];
   dataSource = new MatTableDataSource<Usuario>([]);
 
@@ -29,10 +31,18 @@ export class ListarUsuarios implements OnInit, OnDestroy, AfterViewInit{
 
   private destroy$ = new Subject<void>();
 
-  constructor(private usuarioService: UsuarioService, private toastr: ToastrService, private dialog: MatDialog,) {}
+  constructor(private usuarioService: UsuarioService, private toastr: ToastrService, private dialog: MatDialog, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    this.carregarUsuarios();
+
+      this.route.paramMap
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => {
+        this.filtro = params.get('filtro') || 'pendentes'; // se não tiver, assume pendentes
+        this.carregarUsuarios();
+      });
+
+
     this.configurarFiltro();
   }
 
@@ -40,16 +50,8 @@ export class ListarUsuarios implements OnInit, OnDestroy, AfterViewInit{
     this.configurarDataSource();
   }
 
-  carregarUsuarios() {
-    this.usuarioService.buscarUsuariosPendentes()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (usuarios) => {
-          this.dataSource.data = usuarios;
-          this.configurarDataSource();
-        }
-      });
-  }
+
+
 
   private configurarDataSource() {
     if (this.paginator) {
@@ -59,6 +61,37 @@ export class ListarUsuarios implements OnInit, OnDestroy, AfterViewInit{
       this.dataSource.sort = this.sort;
     }
   }
+
+carregarUsuarios() {
+  let request$: Observable<Usuario[]>;
+
+  switch (this.filtro) {
+    case 'todos':
+      request$ = this.usuarioService.buscarTodosUsuarios();
+      break;
+
+    case 'aprovados':
+      request$ = this.usuarioService.buscarUsuariosAprovados();
+      break;
+
+    default: // 'pendentes' (ou qualquer outro)
+      request$ = this.usuarioService.buscarUsuariosPendentes();
+      break;
+  }
+
+  request$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: (usuarios) => {
+        this.dataSource.data = usuarios;
+        this.configurarDataSource();
+      },
+      error: (err) => {
+        console.error('Erro ao carregar usuários', err);
+      }
+    });
+}
+
 
   configurarFiltro() {
     this.dataSource.filterPredicate = (data: Usuario, filter: string) => {
@@ -78,6 +111,23 @@ export class ListarUsuarios implements OnInit, OnDestroy, AfterViewInit{
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+   alterar(userId: string) {
+    this.router.navigate(['admin/alterar-usuario', userId]);
+  }
+
+  alterarRole(novaRole: string, userId: any ) {
+  this.usuarioService.changeRole(novaRole, userId).subscribe({
+    next: () => {
+      this.toastr.success(`Função alterada para ${novaRole}`, 'Sucesso');
+      this.carregarUsuarios(); // função que atualiza os dados da tabela
+    }
+  });
+}
+
+  registrar() {
+    this.router.navigate(['admin/registrar-usuario']);
   }
 
   aprovar(usuarioId: string) {
