@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './registrar-usuario.css'
 })
 export class RegistrarUsuario {
+
   registerAdminForm!: FormGroup;
 
   constructor(private fb: FormBuilder, private usuarioService: UsuarioService, private router: Router, private toastr: ToastrService) {}
@@ -22,12 +23,20 @@ export class RegistrarUsuario {
 
     initializeForm() {
     this.registerAdminForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      nome: ['', Validators.required],
+      nome: ['', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(50)
+    ]],
+      email: ['', [
+        Validators.required,
+        Validators.email,
+        Validators.maxLength(30)
+      ]]
     });
   }
 
-register() {
+  register() {
     if (!this.registerAdminForm.valid) {
       this.registerAdminForm.markAllAsTouched();
       Object.values(this.registerAdminForm.controls).forEach(control => {
@@ -36,7 +45,6 @@ register() {
       });
       return;
     }
-
     const request: RegisterAdminResquest = {
       email: this.registerAdminForm.value.email,
       nome: this.registerAdminForm.value.nome
@@ -44,19 +52,17 @@ register() {
     this.registrarService(request);
   }
 
-    registrarService(request: RegisterAdminResquest) {
-      this.usuarioService.register(request).subscribe({
-        next: (res) => {
-          this.toastr.success(res.message, "Sucesso");
-          this.router.navigate(['/admin/listar-usuarios', 'aprovados']);
-        },
-        error: (err) => {
-          // err.error contém o corpo da resposta do backend
-          const detalhes = err.error?.details;
-          console.error('Erro no registro:', detalhes);
-          // Mostrar mensagem para usuário
-        }
-      });
-    }
+  registrarService(request: RegisterAdminResquest) {
+    this.usuarioService.register(request).subscribe({
+      next: (res) => {
+        this.toastr.success(res.message, "Sucesso");
+        this.router.navigate(['/admin/listar-usuarios', 'aprovados']);
+      },
+      error: (err) => {
+        this.toastr.error(err.details);
+      }
+
+    });
+  }
 
 }

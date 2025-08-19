@@ -4,9 +4,9 @@ import { Navbar } from './navbar/navbar';
 import { RouterModule } from '@angular/router';
 import { ComfirmDeleteDialog } from './comfirm-delete-dialog/comfirm-delete-dialog';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -15,11 +15,11 @@ import {MatButtonModule} from '@angular/material/button';
   ],
   imports: [
     CommonModule,
- RouterModule,
- MatDialogModule,
- MatDividerModule,
- MatIconModule,
- MatButtonModule
+    RouterModule,
+    MatDialogModule,
+    MatDividerModule,
+    MatIconModule,
+    MatButtonModule
   ],
     exports: [
     Navbar,

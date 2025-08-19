@@ -28,16 +28,15 @@ const routes: Routes = [
           )
       },
      {
-  path: 'admin',
-  loadChildren: () =>
-    import('../pages/home/admin/admin-module').then(m => m.AdminModule),
-  canActivate: [RoleGuard],
-  data: { roles: ['Administrador'] }
-}
+        path: 'admin',
+        loadChildren: () =>
+          import('../pages/home/admin/admin-module').then(m => m.AdminModule),
+        canActivate: [RoleGuard],
+        data: { roles: ['Administrador'] }
+      }
     ]
   }
 ];
-
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

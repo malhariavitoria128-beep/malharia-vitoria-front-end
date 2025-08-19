@@ -11,7 +11,6 @@ import { catchError, finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ApiResponse } from '../models/api-response';
 
 @Injectable()
 export class GlobalInterceptor implements HttpInterceptor {

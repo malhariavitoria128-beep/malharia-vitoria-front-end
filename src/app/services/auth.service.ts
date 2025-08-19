@@ -5,7 +5,6 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '../../environments/environments';
-import { ChangePassword } from '../auth/change-password/change-password';
 import { ApiResponse } from '../core/models/api-response';
 
 const TOKEN_KEY = 'app_token';
@@ -22,20 +21,19 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   initialize(): void {
-  const token = this.getToken();
-  if (!token) {
-    this.usuarioSubject.next(null);
-    return;
-  }
+    const token = this.getToken();
+      if (!token) {
+        this.usuarioSubject.next(null);
+        return;
+      }
 
-  try {
-    this.setUsuarioFromToken(token);
-  } catch (error) {
-    // Token inválido, remove e zera o usuário
-    localStorage.removeItem(TOKEN_KEY);
-    this.usuarioSubject.next(null);
+      try {
+        this.setUsuarioFromToken(token);
+      } catch (error) {
+        localStorage.removeItem(TOKEN_KEY);
+        this.usuarioSubject.next(null);
+      }
   }
-}
 
   login(request: LoginResquest): Observable<UsuarioAutenticado> {
     return this.http.post<LoginResponse>(`${this.baseUrl}Auth/login`, request).pipe(

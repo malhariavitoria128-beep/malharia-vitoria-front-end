@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './services/auth.service';
 
-import { ToastrService } from 'ngx-toastr';
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,12 +9,10 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class AppComponent implements OnInit{
 
-
-
-  constructor(private authService: AuthService,
-    private toastr: ToastrService) {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.authService.initialize();
   }
+
 }

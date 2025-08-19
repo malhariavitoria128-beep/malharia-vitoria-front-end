@@ -36,13 +36,15 @@
                 </div>
               </li>
             }
-             <li class="nav-item dropdown" data-bs-theme="light">
-              <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="download">Produção</a>
-              <div class="dropdown-menu" aria-labelledby="download">
-                <a class="dropdown-item" href="../_vendor/bootstrap/dist/css/bootstrap.rtl.css" download>bootstrap.rtl.css</a>
-                <a class="dropdown-item" href="../_vendor/bootstrap/dist/css/bootstrap.rtl.min.css" download>bootstrap.rtl.min.css</a>
-              </div>
-            </li>
+            @if (isAdmin) {
+              <li class="nav-item dropdown" data-bs-theme="light">
+               <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="download">Produção</a>
+               <div class="dropdown-menu" aria-labelledby="download">
+                 <a class="dropdown-item" href="../_vendor/bootstrap/dist/css/bootstrap.rtl.css" download>bootstrap.rtl.css</a>
+                 <a class="dropdown-item" href="../_vendor/bootstrap/dist/css/bootstrap.rtl.min.css" download>bootstrap.rtl.min.css</a>
+               </div>
+             </li>
+            }
           </ul>
           <ul class="navbar-nav ms-md-auto">
             <li class="nav-item">

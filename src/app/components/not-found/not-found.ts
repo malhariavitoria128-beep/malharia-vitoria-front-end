@@ -5,15 +5,14 @@ import { AnimationOptions } from 'ngx-lottie';
 @Component({
   selector: 'app-not-found',
   templateUrl: './not-found.html',
-  styleUrls: ['./not-found.css'], // corrigido plural,
+  styleUrls: ['./not-found.css'],
   standalone: false
 })
 export class NotFound {
   lottieOptions: AnimationOptions = {
-    path: '/assets/not-found.json' // caminho fixo desde a raiz de assets
+    path: '/assets/not-found.json'
   };
 
   animationCreated(animationItem: AnimationItem): void {
-    console.log('Animação carregada:', animationItem);
   }
 }

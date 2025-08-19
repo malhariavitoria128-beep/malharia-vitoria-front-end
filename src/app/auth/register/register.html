@@ -16,7 +16,15 @@
         [class.is-invalid]="registerForm.get('nome')?.invalid && registerForm.get('nome')?.touched"
         placeholder="Digite seu nome"/>
       <div class="valid-feedback">Ok</div>
-      <div class="invalid-feedback">Nome obrigatório e deve ser válido</div>
+      <div class="invalid-feedback" *ngIf="registerForm.get('nome')?.invalid && registerForm.get('nome')?.touched">
+        <div *ngIf="registerForm.get('nome')?.errors?.['required']">Nome é obrigatório</div>
+        <div *ngIf="registerForm.get('nome')?.errors?.['minlength']">
+          Nome deve ter pelo menos 2 caracteres
+        </div>
+        <div *ngIf="registerForm.get('nome')?.errors?.['maxlength']">
+          Nome não pode ter mais de 50 caracteres
+        </div>
+      </div>
     </div>
 
     <div class="mb-3">
@@ -30,7 +38,13 @@
         [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
         placeholder="Digite seu email"/>
       <div class="valid-feedback">Ok</div>
-      <div class="invalid-feedback">Email obrigatório e deve ser válido</div>
+       <div class="invalid-feedback" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+        <div *ngIf="registerForm.get('email')?.errors?.['required']">Email é obrigatório</div>
+        <div *ngIf="registerForm.get('email')?.errors?.['email']">Email inválido</div>
+        <div *ngIf="registerForm.get('email')?.errors?.['maxlength']">
+          Email não pode ter mais de 30 caracteres
+        </div>
+      </div>
     </div>
 
     <div class="mb-3">
@@ -44,7 +58,15 @@
         [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
         placeholder="Digite sua senha"/>
       <div class="valid-feedback">Ok</div>
-      <div class="invalid-feedback">Senha obrigatória</div>
+      <div class="invalid-feedback" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+        <div *ngIf="registerForm.get('password')?.errors?.['required']">Senha é obrigatória</div>
+        <div *ngIf="registerForm.get('password')?.errors?.['minlength']">
+          Senha deve ter pelo menos 6 caracteres
+        </div>
+        <div *ngIf="registerForm.get('password')?.errors?.['maxlength']">
+          Senha não pode ter mais de 30 caracteres
+        </div>
+      </div>
     </div>
 
     <button type="button" class="btn btn-primary" (click)="register()">

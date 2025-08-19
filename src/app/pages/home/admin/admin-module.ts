@@ -8,18 +8,14 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RegistrarUsuario } from './registrar-usuario/registrar-usuario';
-import { AlterarUsuario } from './alterar-usuario/alterar-usuario';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgLabelTemplateDirective, NgOptionTemplateDirective, NgSelectComponent } from '@ng-select/ng-select';
-import {MatMenuModule} from '@angular/material/menu';
-
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
     Admin,
     ListarUsuarios,
-    RegistrarUsuario,
-    AlterarUsuario
+    RegistrarUsuario
   ],
   imports: [
     CommonModule,
@@ -30,9 +26,6 @@ import {MatMenuModule} from '@angular/material/menu';
     MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
-     NgLabelTemplateDirective,
-    NgOptionTemplateDirective,
-    NgSelectComponent,
     MatMenuModule
   ]
 })

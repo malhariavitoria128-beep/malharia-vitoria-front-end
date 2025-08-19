@@ -18,8 +18,12 @@
       <div class="valid-feedback">
         Ok
       </div>
-      <div class="invalid-feedback">
-        Obrigatório
+      <div class="invalid-feedback" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+        <div *ngIf="loginForm.get('email')?.errors?.['required']">Email é obrigatório</div>
+        <div *ngIf="loginForm.get('email')?.errors?.['email']">Email inválido</div>
+        <div *ngIf="loginForm.get('email')?.errors?.['maxlength']">
+          Email não pode ter mais de 30 caracteres
+        </div>
       </div>
     </div>
 
@@ -36,8 +40,14 @@
       <div class="valid-feedback">
         Ok
       </div>
-      <div class="invalid-feedback">
-        Obrigatório
+       <div class="invalid-feedback" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        <div *ngIf="loginForm.get('password')?.errors?.['required']">Senha é obrigatória</div>
+        <div *ngIf="loginForm.get('password')?.errors?.['minlength']">
+          Senha deve ter pelo menos 6 caracteres
+        </div>
+        <div *ngIf="loginForm.get('password')?.errors?.['maxlength']">
+          Senha não pode ter mais de 30 caracteres
+        </div>
       </div>
     </div>
 

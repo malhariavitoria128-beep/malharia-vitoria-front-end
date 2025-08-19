@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { ApiResponse } from '../../core/models/api-response';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -23,9 +22,17 @@ export class Login implements OnInit{
   }
 
   initializeForm() {
-     this.loginForm = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required]
+    this.loginForm = this.fb.group({
+      email: ['', [
+        Validators.required,
+        Validators.email,
+        Validators.maxLength(30)
+      ]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(30)
+      ]]
     });
   }
 
@@ -46,16 +53,15 @@ export class Login implements OnInit{
     this.logarService(request);
   }
 
-logarService(request: LoginResquest) {
-  console.log("Aqui: ", request);
+  logarService(request: LoginResquest) {
+    this.authService.login(request).subscribe({
+      next: (usuario: UsuarioAutenticado) => {
+        this.toastr.success(`Usuário ${usuario.email} logado`, "Sucesso");
+        this.router.navigate(['/']);
+      }
+    });
+  }
 
-  this.authService.login(request).subscribe({
-    next: (usuario: UsuarioAutenticado) => {
-      this.toastr.success(`Usuário ${usuario.email} logado`, "Sucesso");
-      this.router.navigate(['/']);
-    }
-  });
-}
 }
 
 

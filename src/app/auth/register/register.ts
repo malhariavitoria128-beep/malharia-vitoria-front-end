@@ -23,9 +23,21 @@ export class Register {
 
   initializeForm() {
     this.registerForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      nome: ['', Validators.required],
+      nome: ['', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(50)
+      ]],
+      email: ['', [
+        Validators.required,
+        Validators.email,
+        Validators.maxLength(30)
+      ]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(6),
+        Validators.maxLength(30)
+      ]]
     });
   }
 
@@ -53,12 +65,6 @@ export class Register {
         this.toastr.success(res.message, "Sucesso");
         this.router.navigate(['/login']);
       },
-      error: (err) => {
-        // err.error contém o corpo da resposta do backend
-        const detalhes = err.error?.details;
-        console.error('Erro no registro:', detalhes);
-        // Mostrar mensagem para usuário
-      }
     });
   }
 

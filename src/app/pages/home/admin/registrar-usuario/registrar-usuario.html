@@ -12,7 +12,15 @@
         [class.is-invalid]="registerAdminForm.get('nome')?.invalid && registerAdminForm.get('nome')?.touched"
         placeholder="Digite seu nome"/>
       <div class="valid-feedback">Ok</div>
-      <div class="invalid-feedback">Nome obrigatório e deve ser válido</div>
+      <div class="invalid-feedback" *ngIf="registerAdminForm.get('nome')?.invalid && registerAdminForm.get('nome')?.touched">
+        <div *ngIf="registerAdminForm.get('nome')?.errors?.['required']">Nome é obrigatório</div>
+        <div *ngIf="registerAdminForm.get('nome')?.errors?.['minlength']">
+          Nome deve ter pelo menos 2 caracteres
+        </div>
+        <div *ngIf="registerAdminForm.get('nome')?.errors?.['maxlength']">
+          Nome não pode ter mais de 50 caracteres
+        </div>
+      </div>
     </div>
 
     <div class="mb-3">
@@ -26,7 +34,13 @@
         [class.is-invalid]="registerAdminForm.get('email')?.invalid && registerAdminForm.get('email')?.touched"
         placeholder="Digite seu email"/>
       <div class="valid-feedback">Ok</div>
-      <div class="invalid-feedback">Email obrigatório e deve ser válido</div>
+      <div class="invalid-feedback" *ngIf="registerAdminForm.get('email')?.invalid && registerAdminForm.get('email')?.touched">
+        <div *ngIf="registerAdminForm.get('email')?.errors?.['required']">Email é obrigatório</div>
+        <div *ngIf="registerAdminForm.get('email')?.errors?.['email']">Email inválido</div>
+        <div *ngIf="registerAdminForm.get('email')?.errors?.['maxlength']">
+          Email não pode ter mais de 30 caracteres
+        </div>
+    </div>
     </div>
 
     <button type="button" class="btn btn-primary" (click)="register()">

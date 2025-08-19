@@ -1,7 +1,7 @@
 export interface Usuario {
   userId: string,
   email: string;
-  createdAt: Date;
+  createdAt: string;
   nome: string;
   role: string;
   isApproved: boolean;

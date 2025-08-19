@@ -9,8 +9,6 @@ export class RoleGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const roles = route.data['roles'] || [];
     if (!roles.length) return true;
-
-    // Supondo que auth.hasRole(role: string) verifica se o usuário tem aquela role
     const hasRole = roles.some((role: string) => this.auth.hasRole(role));
 
     if (!hasRole) {

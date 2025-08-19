@@ -10,10 +10,9 @@ import { AnimationOptions } from 'ngx-lottie';
 })
 export class AccessDenied {
     lottieOptions: AnimationOptions = {
-    path: '/assets/access-denied.json' // caminho fixo desde a raiz de assets
+    path: '/assets/access-denied.json'
   };
 
   animationCreated(animationItem: AnimationItem): void {
-    console.log('Animação carregada:', animationItem);
   }
 }

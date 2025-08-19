@@ -10,7 +10,7 @@ const routes: Routes = [
     path: '',
     loadChildren: () =>
       import('./pages/pages.module').then(m => m.PagesModule),
-    canActivate: [AuthGuard] // protege o módulo pages
+    canActivate: [AuthGuard]
   },
   {
     path: '',
@@ -23,7 +23,6 @@ const routes: Routes = [
     path: 'not-found',
     component: NotFound
   },
-  // rota coringa (sempre por último!)
   {
     path: '**',
     redirectTo: 'not-found'

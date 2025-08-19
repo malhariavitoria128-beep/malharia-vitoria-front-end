@@ -10,11 +10,10 @@ import { AnimationOptions } from 'ngx-lottie';
 })
 export class NotAproved {
   lottieOptions: AnimationOptions = {
-    path: '/assets/not-approved.json' // caminho fixo desde a raiz de assets
+    path: '/assets/not-approved.json'
   };
 
   animationCreated(animationItem: AnimationItem): void {
-    console.log('Animação carregada:', animationItem);
   }
 
 }

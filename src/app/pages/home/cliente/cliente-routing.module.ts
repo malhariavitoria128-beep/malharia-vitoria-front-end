@@ -6,9 +6,9 @@ import { ListarClientes } from './listar-clientes/listar-clientes';
 const routes: Routes = [
   {
     path: '',
-    component: Cliente, // Pai
+    component: Cliente,
     children: [
-      { path: '', redirectTo: 'listar-clientes', pathMatch: 'full' }, // Redireciona automático
+      { path: '', redirectTo: 'listar-clientes', pathMatch: 'full' }, 
       { path: 'listar-clientes', component: ListarClientes }
     ]
   }

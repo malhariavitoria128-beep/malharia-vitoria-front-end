@@ -1,19 +1,16 @@
 <div class="page-container">
 
-  <!-- Barra de busca e botão -->
   <div class="top-bar">
     <div class="search-box">
       <i class="bi bi-search"></i>
-      <input type="text" placeholder="Buscar usuário..." (keyup)="aplicarFiltro($event)">
+      <input type="text" placeholder="Busca..." (keyup)="aplicarFiltro($event)">
     </div>
     <button type="button" class="btn btn-outline-info" (click)="registrar()">Adicionar Usuário</button>
   </div>
 
-  <!-- Container da tabela -->
   <div class="table-card">
     <table mat-table [dataSource]="dataSource" matSort class="custom-table">
 
-      <!-- Nome -->
       <ng-container matColumnDef="nome">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
         <td mat-cell *matCellDef="let element">
@@ -21,22 +18,19 @@
         </td>
       </ng-container>
 
-      <!-- Email -->
       <ng-container matColumnDef="email">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
         <td mat-cell *matCellDef="let element">{{ element.email }}</td>
       </ng-container>
 
-      <!-- Role -->
       <ng-container matColumnDef="role">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Função </th>
         <td mat-cell *matCellDef="let element">{{ element.role }}</td>
       </ng-container>
 
-      <!-- Data de criação -->
       <ng-container matColumnDef="createdAt">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Data de Criação </th>
-        <td mat-cell *matCellDef="let element">{{ element.createdAt | date:'dd/MM/yyyy' }}</td>
+        <td mat-cell *matCellDef="let element">{{ element.createdAt | date:'dd/MM/yyyy HH:mm:ss' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="isApproved">
@@ -53,46 +47,31 @@
         </td>
       </ng-container>
 
-      <!-- Ações -->
      <ng-container matColumnDef="actions">
-  <th mat-header-cell *matHeaderCellDef> Ações </th>
-  <td mat-cell *matCellDef="let element">
-    <div class="action-icons">
-
-      <!-- Menu para alterar função -->
-
-        <i mat-icon-button [matMenuTriggerFor]="roleMenu" class="bi bi-pen"></i>
-     
-
-      <mat-menu #roleMenu="matMenu">
-        <button mat-menu-item *ngIf="element.role !== 'Administrador'" (click)="alterarRole('Administrador', element.userId )">
-          Tornar Administrador
-        </button>
-        <button mat-menu-item *ngIf="element.role !== 'Operador'" (click)="alterarRole('Operador', element.userId )">
-          Tornar Operador
-        </button>
-      </mat-menu>
-
-      <!-- Outras ações -->
-      <i class="bi bi-trash3" [matTooltip]="'Deletar'" matTooltipPosition="above" (click)="deletar(element.userId, element.nome)"></i>
-      <i class="bi-check-circle" [matTooltip]="'Aprovar'" matTooltipPosition="above" (click)="aprovar(element.userId)"></i>
-
-    </div>
-  </td>
-</ng-container>
-
-      <!-- Linhas -->
+      <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="action-icons">
+            <i mat-icon-button [matMenuTriggerFor]="roleMenu" class="bi bi-pen"></i>
+            <mat-menu #roleMenu="matMenu">
+              <button mat-menu-item *ngIf="element.role !== 'Administrador'" (click)="alterarRole('Administrador', element.userId )">
+                Tornar Administrador
+              </button>
+              <button mat-menu-item *ngIf="element.role !== 'Operador'" (click)="alterarRole('Operador', element.userId )">
+                Tornar Operador
+              </button>
+            </mat-menu>
+            <i class="bi bi-trash3" [matTooltip]="'Deletar'" matTooltipPosition="above" (click)="deletar(element.userId, element.nome)"></i>
+            <i class="bi-check-circle" [matTooltip]="'Aprovar'" matTooltipPosition="above" (click)="aprovar(element.userId)"></i>
+          </div>
+        </td>
+      </ng-container>
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
     </table>
-
-    <!-- Paginador -->
-    <mat-paginator
-    [pageSize]="10"
-      [pageSizeOptions]="[10, 20]"
-      showFirstLastButtons>
-    </mat-paginator>
+      <mat-paginator
+      [pageSize]="10"
+        [pageSizeOptions]="[10, 20]"
+        showFirstLastButtons>
+      </mat-paginator>
   </div>
-
 </div>

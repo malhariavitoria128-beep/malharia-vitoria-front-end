@@ -7,28 +7,8 @@ import { Component } from '@angular/core';
   templateUrl: './listar-pedidos.html',
   styleUrl: './listar-pedidos.css'
 })
-export class ListarPedidos {
-  pedidos: any[] = [];
-  error: string | null = null;
+export class ListarPedidos {}
 
-  constructor(private http: HttpClient) {}
 
-  ngOnInit() {
-    this.carregarPedidos();
-  }
-
-  carregarPedidos() {
-    this.http.get('https://localhost:7015/api/Pedido').subscribe({
-    next: (data: any) => {
-      this.pedidos = data;
-      this.error = null;
-    },
-    error: (err) => {
-
-    }
-  });
-  }
-
-}
 
 

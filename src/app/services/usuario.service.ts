@@ -15,42 +15,36 @@ export class UsuarioService {
 
   constructor(private http: HttpClient) {}
 
-    buscarUsuariosPendentes(): Observable<Usuario[]> {
-      return this.http.get<Usuario[]>(`${this.baseUrl}Admin/pending`);
-    }
+  buscarUsuariosPendentes(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.baseUrl}Admin/pending`);
+  }
 
-    buscarTodosUsuarios(): Observable<Usuario[]> {
-      return this.http.get<Usuario[]>(`${this.baseUrl}Admin/all`);
-    }
+  buscarTodosUsuarios(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.baseUrl}Admin/all`);
+  }
 
-    buscarUsuariosAprovados(): Observable<Usuario[]> {
-      return this.http.get<Usuario[]>(`${this.baseUrl}Admin/approved`);
-    }
+  buscarUsuariosAprovados(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.baseUrl}Admin/approved`);
+  }
 
-      register(request: RegisterAdminResquest): Observable<{ message: string }> {
-        return this.http.post<{ message: string }>(`${this.baseUrl}Admin/register-by-admin`, request);
-      }
+  register(request: RegisterAdminResquest): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.baseUrl}Admin/register-by-admin`, request);
+  }
 
-autorizarUsuario(userId: string): Observable<{success: boolean, message: string, userId: number}> {
-  return this.http.post<{success: boolean, message: string, userId: number}>(
-    `${this.baseUrl}Admin/approve/${userId}`,
-    {}
-  );
-}
+  autorizarUsuario(userId: string): Observable<{success: boolean, message: string, userId: number}> {
+    return this.http.post<{success: boolean, message: string, userId: number}>(`${this.baseUrl}Admin/approve/${userId}`, {});
+  }
 
-deletarUsuario(userId: string): Observable<{success: boolean, message: string, userId: number}> {
-  return this.http.delete<{success: boolean, message: string, userId: number}>(
-    `${this.baseUrl}Admin/${userId}`,
-    {}
-  );
-}
+  deletarUsuario(userId: string): Observable<{success: boolean, message: string, userId: number}> {
+    return this.http.delete<{success: boolean, message: string, userId: number}>(`${this.baseUrl}Admin/${userId}`,{});
+  }
 
-changeRole(novaRole: string, userId: number): Observable<ApiResponse> {
-  const params = new HttpParams()
-    .set('role', novaRole)
-    .set('id', userId.toString());
+  changeRole(novaRole: string, userId: number): Observable<ApiResponse> {
+    const params = new HttpParams()
+      .set('role', novaRole)
+      .set('id', userId.toString());
 
-  return this.http.put<ApiResponse>(`${this.baseUrl}Admin/change-role`, null, { params });
-}
+    return this.http.put<ApiResponse>(`${this.baseUrl}Admin/change-role`, null, { params });
+  }
 
 }

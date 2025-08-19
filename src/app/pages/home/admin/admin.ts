@@ -8,11 +8,13 @@ import { Router } from '@angular/router';
   styleUrl: './admin.css'
 })
 export class Admin {
- filtroSelecionado: string = 'pendentes'; // valor padrão
+
+  filtroSelecionado: string = 'pendentes';
+
    constructor(private router: Router) {}
 
   navegar(filtro: string) {
-     this.filtroSelecionado = filtro; // marca o filtro selecionado
+     this.filtroSelecionado = filtro; 
     this.router.navigate(['admin/listar-usuarios', filtro]);
   }
 

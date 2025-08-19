@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { UsuarioAutenticado } from '../../../core/models/login/login.model';
 import { AuthService } from '../../../services/auth.service';
 
-
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.html',
@@ -26,6 +25,5 @@ export class Navbar {
   logout() {
     this.authService.logout();
   }
-
 
 }

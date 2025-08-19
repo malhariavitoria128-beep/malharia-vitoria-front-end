@@ -2,11 +2,7 @@ import { NgModule, provideBrowserGlobalErrorListeners, provideZoneChangeDetectio
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { registerLocaleData } from '@angular/common';
-import localePt from '@angular/common/locales/pt';
-registerLocaleData(localePt);
-
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from '../app/app-routing.module';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -20,6 +16,8 @@ import { GlobalInterceptor } from './core/interceptor/global.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { getPtBrPaginatorIntl } from './providers/paginator-pt-br';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import localePt from '@angular/common/locales/pt';
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
@@ -33,9 +31,9 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
     BrowserModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-   LottieComponent,
+    LottieComponent,
     NgxSpinnerModule.forRoot(),
-     ToastrModule.forRoot(),
+    ToastrModule.forRoot(),
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
@@ -44,15 +42,13 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
     { provide: MatPaginatorIntl, useValue: getPtBrPaginatorIntl() },
      { provide: LOCALE_ID, useValue: 'pt-BR' },
      provideLottieOptions({
-      player: () => player // usando import direto
+      player: () => player
     }),
       {
       provide: HTTP_INTERCEPTORS,
       useClass: GlobalInterceptor,
       multi: true,
     },
-
-
   ],
   bootstrap: [AppComponent]
 })
