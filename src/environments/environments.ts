@@ -1,5 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: "https://localhost:7015/api/",
+  apiUrl: 'https://locator-guards-powerful-annex.trycloudflare.com/api/'
 };
-
