@@ -1,0 +1,12 @@
+  <h2 mat-dialog-title class="text-primary">Confirmar novo pedido</h2>
+  <mat-dialog-content>
+    <p>Tem certeza que deseja criar um novo pedido para <strong class="text-primary">{{data.userName}}</strong>?</p>
+  </mat-dialog-content>
+  <mat-dialog-actions style="display: flex; justify-content: space-around; padding: 20px;">
+      <button type="button" class="btn btn-outline-primary me-2" mat-dialog-close>
+      <i class="bi bi-x-circle me-1"></i>Cancelar
+    </button>
+    <button type="button" class="btn btn-info" [mat-dialog-close]="true">
+      <i class="bi bi-trash3 me-1"></i>Aceitar
+    </button>
+  </mat-dialog-actions>

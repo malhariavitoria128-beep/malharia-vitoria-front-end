@@ -31,29 +31,29 @@
       <label for="password" class="form-label">Senha</label>
       <input
         id="password"
-        type="password"
+        [type]="showPassword ? 'text' : 'password'"
         class="form-control"
         formControlName="password"
         [class.is-valid]="loginForm.get('password')?.valid && loginForm.get('password')?.touched"
         [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-        placeholder="Digite sua senha"/>
-      <div class="valid-feedback">
-        Ok
-      </div>
-       <div class="invalid-feedback" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        placeholder="Digite sua senha"
+      />
+      <div class="valid-feedback">Ok</div>
+      <div class="invalid-feedback" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
         <div *ngIf="loginForm.get('password')?.errors?.['required']">Senha é obrigatória</div>
-        <div *ngIf="loginForm.get('password')?.errors?.['minlength']">
-          Senha deve ter pelo menos 6 caracteres
-        </div>
-        <div *ngIf="loginForm.get('password')?.errors?.['maxlength']">
-          Senha não pode ter mais de 30 caracteres
-        </div>
+        <div *ngIf="loginForm.get('password')?.errors?.['minlength']">Senha deve ter pelo menos 6 caracteres</div>
+        <div *ngIf="loginForm.get('password')?.errors?.['maxlength']">Senha não pode ter mais de 30 caracteres</div>
       </div>
     </div>
 
-    <button type="button" class="btn btn-primary" (click)="logar()">
-      Entrar
-    </button>
+    <div class="d-flex mb-3">
+      <button type="submit" class="btn btn-primary flex-grow-1 me-2" (click)="logar()">
+        Entrar
+      </button>
+      <button type="button" class="btn btn-outline-info d-flex justify-content-center align-items-center" style="flex-basis: 10%;" (click)="togglePasswordVisibility()">
+        <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
+      </button>
+    </div>
 
     <div class="text-center mt-3">
       <a routerLink="/register" class="text-decoration-none">Criar conta</a>

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Pedido } from './pedido/pedido';
 import { ListarPedidos } from './listar-pedidos/listar-pedidos';
+import { CadastrarPedido } from './cadastrar-pedido/cadastrar-pedido';
 
 const routes: Routes = [
   {
@@ -9,7 +10,8 @@ const routes: Routes = [
     component: Pedido, // Pai
     children: [
       { path: '', redirectTo: 'listar-pedidos', pathMatch: 'full' }, // Redireciona automático
-      { path: 'listar-pedidos', component: ListarPedidos }
+      { path: 'listar-pedidos', component: ListarPedidos },
+      { path: 'cadastrar-pedido/:idCliente', component: CadastrarPedido }
     ]
   }
 ];

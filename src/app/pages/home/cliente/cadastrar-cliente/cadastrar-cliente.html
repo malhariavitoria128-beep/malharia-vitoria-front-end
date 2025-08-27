@@ -1,0 +1,133 @@
+<div class="d-flex justify-content-center align-items-start" style="min-height: 60vh; padding-top: 10px; margin-top: 100px;">
+  <form [formGroup]="registerClienteForm" novalidate class="container">
+    <h4 class="text-center mb-4">Cadastro Cliente</h4>
+
+    <div class="row">
+      <!-- Nome ocupa toda a linha -->
+      <div class="col-12 mb-3">
+        <label for="nome" class="form-label">Nome</label>
+        <input
+          id="nome"
+          type="text"
+          class="form-control"
+          formControlName="nome"
+          [class.is-valid]="registerClienteForm.get('nome')?.valid && registerClienteForm.get('nome')?.touched"
+          [class.is-invalid]="registerClienteForm.get('nome')?.invalid && registerClienteForm.get('nome')?.touched"
+          placeholder="Digite seu nome"/>
+        <div class="invalid-feedback" *ngIf="registerClienteForm.get('nome')?.invalid && registerClienteForm.get('nome')?.touched">
+          <div *ngIf="registerClienteForm.get('nome')?.errors?.['required']">Nome é obrigatório</div>
+          <div *ngIf="registerClienteForm.get('nome')?.errors?.['maxlength']">Nome não pode ter mais de 100 caracteres</div>
+        </div>
+      </div>
+
+      <!-- CPF/CNPJ e Email lado a lado no desktop -->
+      <div class="col-md-6 mb-3">
+        <label for="cpfCnpj" class="form-label">Cpf/Cnpj</label>
+        <input
+          id="cpfCnpj"
+          type="text"
+          class="form-control"
+          formControlName="cpfCnpj"
+          mask="000.000.000-00||00.000.000/0000-00"
+          [dropSpecialCharacters]="false"
+          [class.is-valid]="registerClienteForm.get('cpfCnpj')?.valid && (registerClienteForm.get('cpfCnpj')?.touched || registerClienteForm.get('cpfCnpj')?.dirty)"
+          [class.is-invalid]="registerClienteForm.get('cpfCnpj')?.invalid && (registerClienteForm.get('cpfCnpj')?.touched || registerClienteForm.get('cpfCnpj')?.dirty)"
+          placeholder="Digite o cpf/cnpj"/>
+        <div class="invalid-feedback"
+            *ngIf="registerClienteForm.get('cpfCnpj')?.invalid &&
+                    (registerClienteForm.get('cpfCnpj')?.touched || registerClienteForm.get('cpfCnpj')?.dirty)">
+          Cpf/Cnpj inválido
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          formControlName="email"
+          [class.is-valid]="registerClienteForm.get('email')?.valid && registerClienteForm.get('email')?.touched"
+          [class.is-invalid]="registerClienteForm.get('email')?.invalid && registerClienteForm.get('email')?.touched"
+          placeholder="Digite seu email"/>
+        <div class="invalid-feedback" *ngIf="registerClienteForm.get('email')?.invalid && registerClienteForm.get('email')?.touched">
+          <div *ngIf="registerClienteForm.get('email')?.errors?.['email']">Email inválido</div>
+        </div>
+      </div>
+
+      <!-- Telefone e CEP lado a lado -->
+      <div class="col-md-6 mb-3">
+        <label for="telefone" class="form-label">Telefone</label>
+        <input
+          id="telefone"
+          type="text"
+          class="form-control"
+          formControlName="telefone"
+          mask="(00) 0000-0000||(00) 00000-0000"
+          [showMaskTyped]="true"
+          [dropSpecialCharacters]="false"
+          [class.is-valid]="registerClienteForm.get('telefone')?.valid && registerClienteForm.get('telefone')?.touched"
+          [class.is-invalid]="registerClienteForm.get('telefone')?.invalid && registerClienteForm.get('telefone')?.touched"
+          placeholder="Digite seu telefone"/>
+        <div class="invalid-feedback" *ngIf="registerClienteForm.get('telefone')?.invalid && registerClienteForm.get('telefone')?.touched">
+          <div *ngIf="registerClienteForm.get('telefone')?.errors?.['pattern']">
+            Formato inválido. Use (61)9999-9999 ou (61)99999-9999
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="cep" class="form-label">CEP</label>
+        <input
+          id="cep"
+          type="text"
+          class="form-control"
+          formControlName="cep"
+          mask="00.000-000"
+          [showMaskTyped]="true"
+          [dropSpecialCharacters]="false"
+          [class.is-valid]="registerClienteForm.get('cep')?.valid && registerClienteForm.get('cep')?.touched"
+          [class.is-invalid]="registerClienteForm.get('cep')?.invalid && registerClienteForm.get('cep')?.touched"
+          placeholder="Digite o CEP"/>
+        <div class="invalid-feedback" *ngIf="registerClienteForm.get('cep')?.invalid && registerClienteForm.get('cep')?.touched">
+          <div *ngIf="registerClienteForm.get('cep')?.errors?.['pattern']">
+            Formato inválido. Use 73.350-303
+          </div>
+        </div>
+      </div>
+
+      <!-- Complemento (linha inteira) -->
+      <div class="col-12 mb-3">
+        <label for="complemento" class="form-label">Complemento</label>
+        <input
+          id="complemento"
+          type="text"
+          class="form-control"
+          formControlName="complemento"
+          placeholder="Ex: Casa 3, Sobrado, Fundos"/>
+        <small class="form-text text-muted">
+          Ex: "Casa 3", "Sobrado", "Fundos", "Em cima da borracharia"
+        </small>
+      </div>
+
+      <!-- Endereço completo (linha inteira) -->
+      <div class="col-12 mb-3">
+        <label for="endereco" class="form-label">Endereço Completo</label>
+        <textarea
+          id="endereco"
+          class="form-control"
+          formControlName="endereco"
+          rows="2"
+          readonly
+          placeholder="O endereço será preenchido automaticamente pelo CEP"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button type="button" class="btn btn-primary" (click)="register()">
+        Cadastrar
+      </button>
+    </div>
+  </form>
+</div>

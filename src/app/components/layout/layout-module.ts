@@ -7,11 +7,13 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { ConfirmPedidoDialog } from './confirm-pedido-dialog/confirm-pedido-dialog';
 
 @NgModule({
   declarations: [
     Navbar,
-    ComfirmDeleteDialog
+    ComfirmDeleteDialog,
+    ConfirmPedidoDialog
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { MatButtonModule } from '@angular/material/button';
   ],
     exports: [
     Navbar,
-    ComfirmDeleteDialog
+    ComfirmDeleteDialog,
+    ConfirmPedidoDialog
   ]
 })
 export class LayoutModule { }

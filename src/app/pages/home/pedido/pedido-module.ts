@@ -3,13 +3,15 @@ import { CommonModule } from '@angular/common';
 import { Pedido } from './pedido/pedido';
 import { PedidoRoutingModule } from './pedido-routing.module';
 import { ListarPedidos } from './listar-pedidos/listar-pedidos';
+import { CadastrarPedido } from './cadastrar-pedido/cadastrar-pedido';
 
 
 
 @NgModule({
   declarations: [
     Pedido,
-    ListarPedidos
+    ListarPedidos,
+    CadastrarPedido
   ],
   imports: [
     CommonModule,

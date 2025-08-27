@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NewPassword } from '../../core/models/login/login.model';
 import { ApiResponse } from '../../core/models/api-response';
 import { ToastrService } from 'ngx-toastr';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-change-password',
@@ -15,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 export class ChangePassword {
 
   changeForm!: FormGroup;
+  showPassword = false;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private toastr: ToastrService) {}
 
@@ -57,14 +59,21 @@ export class ChangePassword {
   }
 
   alterarService(request: NewPassword) {
-    this.authService.changePassword(request).subscribe({
-      next: (response: ApiResponse) => {
-        this.toastr.success(response.message, 'Sucesso');
-        localStorage.removeItem('token');
-        this.router.navigate(['/login']);
+    this.authService.changePassword(request)
+      .pipe(take(1))
+      .subscribe({
+        next: (response: ApiResponse) => {
+          this.toastr.success(response.message, 'Sucesso');
+          localStorage.removeItem('token');
+          this.router.navigate(['/login']);
       },
     });
   }
+
+    togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
 
 }
 

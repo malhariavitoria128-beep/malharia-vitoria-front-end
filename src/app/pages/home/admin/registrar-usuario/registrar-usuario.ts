@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RegisterAdminResquest } from '../../../../core/models/login/login.model';
 import { UsuarioService } from '../../../../services/usuario.service';
@@ -11,11 +11,14 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './registrar-usuario.html',
   styleUrl: './registrar-usuario.css'
 })
-export class RegistrarUsuario {
+export class RegistrarUsuario implements OnInit{
 
   registerAdminForm!: FormGroup;
 
-  constructor(private fb: FormBuilder, private usuarioService: UsuarioService, private router: Router, private toastr: ToastrService) {}
+  constructor(private fb: FormBuilder,
+              private usuarioService: UsuarioService,
+              private router: Router,
+              private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.initializeForm();

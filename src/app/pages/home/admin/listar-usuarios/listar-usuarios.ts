@@ -18,13 +18,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ListarUsuarios implements OnInit, OnDestroy, AfterViewInit{
 
-  filtro!: string;
-  displayedColumns: string[] = ['nome', 'email', 'role', 'createdAt', 'isApproved', 'actions'];
-  dataSource = new MatTableDataSource<Usuario>([]);
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('deleteModal') deleteModal!: TemplateRef<any>;
+  filtro!: string;
+  displayedColumns: string[] = ['nome', 'email', 'role', 'createdAt', 'isApproved', 'actions'];
+  dataSource = new MatTableDataSource<Usuario>([]);
   selectedUser: any;
   private destroy$ = new Subject<void>();
 
@@ -171,5 +170,5 @@ export class ListarUsuarios implements OnInit, OnDestroy, AfterViewInit{
     this.destroy$.next();
     this.destroy$.complete();
   }
-  
+
 }

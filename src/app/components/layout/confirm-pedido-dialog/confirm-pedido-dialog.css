@@ -1,0 +1,33 @@
+  .alert {
+      display: flex;
+      align-items: center;
+      padding: 8px 16px;
+    }
+    mat-icon {
+      margin-right: 8px;
+    }
+
+    .mat-dialog-container {
+  background: #fff;
+  border: 1px solid #2fa4e7;
+  box-shadow: 0 4px 12px rgba(47, 164, 231, 0.2);
+}
+
+.mat-dialog-title {
+  color: #2fa4e7;
+  font-weight: 500;
+}
+
+.mat-button {
+  &:hover {
+    background-color: rgba(47, 164, 231, 0.1);
+  }
+}
+
+.mat-raised-button {
+  &[color="warn"] {
+    background-color: #d9534f;
+    color: white;
+  }
+}
+

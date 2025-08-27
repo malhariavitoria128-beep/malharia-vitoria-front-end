@@ -1,1 +1,69 @@
-<p>listar-clientes works!</p>
+<div class="page-container" style="margin-top: 100px;">
+
+  <div class="top-bar">
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Busca..." (keyup)="aplicarFiltro($event)">
+    </div>
+    <button type="button" class="btn btn-outline-info" (click)="registrar()">Adicionar Cliente</button>
+  </div>
+
+  <div class="table-card">
+    <table mat-table [dataSource]="dataSource" matSort class="custom-table">
+
+      <ng-container matColumnDef="nome">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
+        <td mat-cell *matCellDef="let element"><strong>{{ element.nome }}</strong></td>
+      </ng-container>
+
+      <!-- Coluna única para CPF/CNPJ -->
+      <ng-container matColumnDef="documento">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> CPF/CNPJ </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.cpf || element.cnpj || 'Não informado' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+        <td mat-cell *matCellDef="let element">{{ element.email || "não informado" }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="telefone">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Telefone </th>
+        <td mat-cell *matCellDef="let element">{{ element.telefone || "não informado" }}</td>
+      </ng-container>
+
+      <!-- Nova coluna para endereço completo -->
+      <ng-container matColumnDef="endereco">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Endereço </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.endereco || 'Endereço não disponível' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="action-icons">
+            <i class="bi bi-file-earmark-plus" [matTooltip]="'Novo Pedido'" matTooltipPosition="above" (click)="novoPedido(element.id, element.nome)"></i>
+            <i class="bi bi-pen" [matTooltip]="'Alterar'" matTooltipPosition="above" (click)="alterar(element.id)"></i>
+            <i class="bi bi-trash3" [matTooltip]="'Deletar'" matTooltipPosition="above" (click)="deletar(element.id, element.nome)"></i>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Atualizar displayedColumns para refletir as mudanças -->
+      <tr mat-header-row *matHeaderRowDef="['nome', 'documento', 'email', 'telefone', 'endereco', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['nome', 'documento', 'email', 'telefone', 'endereco', 'actions'];"></tr>
+
+    </table>
+
+    <mat-paginator
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 20]"
+      showFirstLastButtons>
+    </mat-paginator>
+  </div>
+
+</div>

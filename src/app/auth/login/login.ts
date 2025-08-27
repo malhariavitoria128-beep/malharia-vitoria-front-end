@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 export class Login implements OnInit{
 
   loginForm!: FormGroup;
+  showPassword = false;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router, private toastr: ToastrService) {}
 
@@ -54,12 +56,18 @@ export class Login implements OnInit{
   }
 
   logarService(request: LoginResquest) {
-    this.authService.login(request).subscribe({
-      next: (usuario: UsuarioAutenticado) => {
-        this.toastr.success(`Usuário ${usuario.email} logado`, "Sucesso");
-        this.router.navigate(['/']);
-      }
-    });
+    this.authService.login(request)
+      .pipe(take(1))
+      .subscribe({
+        next: (usuario: UsuarioAutenticado) => {
+          this.toastr.success(`Usuário ${usuario.email} logado`, "Sucesso");
+          this.router.navigate(['/']);
+        }
+      });
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
   }
 
 }

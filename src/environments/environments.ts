@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://locator-guards-powerful-annex.trycloudflare.com/api/'
+  //apiUrl: 'https://api.softlume.com.br/api/' // domínio do backend
+  apiUrl: 'http://localhost:7015/api/' // domínio do backend
 };

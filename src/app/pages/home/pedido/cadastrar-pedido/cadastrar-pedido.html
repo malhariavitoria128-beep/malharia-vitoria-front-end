@@ -1,0 +1,19 @@
+<div class="page-container">
+  <div class="top-bar">
+<div class="search-box" style="background-color: #e0f7fa; padding: 0.75rem 1rem;">
+  <ng-container *ngIf="pedidoAtual; else semPedido">
+    <div class="pedido-info">
+      <div><strong>Número do Pedido:</strong> {{ pedidoAtual.numeroPedido }}</div>
+      <div><strong>Cliente:</strong> {{ pedidoAtual.nomeCliente }}</div>
+      <div><strong>Valor Total:</strong> R$ {{ pedidoAtual.valorTotal | number:'1.2-2' }}</div>
+    </div>
+    <button class="btn btn-primary btn-sm d-flex align-items-center" (click)="abrirAdicionarItem()">
+      <i class="bi bi-plus-circle me-1"></i> Adicionar Item
+    </button>
+  </ng-container>
+  <ng-template #semPedido>
+    <span>Nenhum pedido carregado</span>
+  </ng-template>
+</div>
+  </div>
+</div>
