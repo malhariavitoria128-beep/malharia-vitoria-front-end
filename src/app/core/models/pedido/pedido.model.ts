@@ -14,5 +14,7 @@ export interface Pedido {
   nomeCliente?: string;
   dataPedido: string;
   valorTotal: number;
+  status?: string;
+  dataEntrega?: string;
   itens: ItemPedido[];
 }

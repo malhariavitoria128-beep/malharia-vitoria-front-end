@@ -31,5 +31,20 @@ form button {
 }
 
 
+.no-padding-modal .mat-dialog-container {
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
 
+.dark-backdrop {
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.no-padding-modal .mat-dialog-content {
+  margin: 0;
+  padding: 0;
+  max-height: none;
+}
 

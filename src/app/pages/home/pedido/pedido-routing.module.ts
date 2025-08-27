@@ -11,7 +11,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'listar-pedidos', pathMatch: 'full' }, // Redireciona automático
       { path: 'listar-pedidos', component: ListarPedidos },
-      { path: 'cadastrar-pedido/:idCliente', component: CadastrarPedido }
+      { path: 'cadastrar-pedido/:idPedido', component: CadastrarPedido }
     ]
   }
 ];

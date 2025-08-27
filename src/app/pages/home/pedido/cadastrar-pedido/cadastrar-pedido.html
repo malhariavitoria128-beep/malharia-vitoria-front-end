@@ -1,19 +1,174 @@
 <div class="page-container">
   <div class="top-bar">
-<div class="search-box" style="background-color: #e0f7fa; padding: 0.75rem 1rem;">
-  <ng-container *ngIf="pedidoAtual; else semPedido">
-    <div class="pedido-info">
-      <div><strong>Número do Pedido:</strong> {{ pedidoAtual.numeroPedido }}</div>
-      <div><strong>Cliente:</strong> {{ pedidoAtual.nomeCliente }}</div>
-      <div><strong>Valor Total:</strong> R$ {{ pedidoAtual.valorTotal | number:'1.2-2' }}</div>
+    <div class="pedido-box" *ngIf="pedidoAtual; else semPedido">
+
+      <div class="pedido-detalhes-esquerda">
+        <div class="detalhe-inline">
+          <label class="label-sup"><i class="bi bi-hash text-primary me-1"></i> Pedido</label>
+          <span style="font-size: 17px; color: blue; font-weight: bold;">{{ pedidoAtual.numeroPedido }}</span>
+        </div>
+
+        <div class="detalhe-inline">
+          <label class="label-sup"><i class="bi bi-person text-secondary me-1"></i> Cliente</label>
+          <span>{{ pedidoAtual.nomeCliente }}</span>
+        </div>
+
+        <!-- Só mostra se tiver data de entrega -->
+        <div class="detalhe-inline" *ngIf="pedidoAtual.dataEntrega">
+          <label class="label-sup"><i class="bi bi-truck text-info me-1"></i> Previsão de Entrega</label>
+          <span>{{ pedidoAtual.dataEntrega | date:"dd/MM/yyyy"}}</span>
+        </div>
+      </div>
+
+      <div class="pedido-valor">
+        <label class="label-sup"><i class="bi bi-cash-coin text-success me-1"></i> Valor Total</label>
+        <span>R$ {{ pedidoAtual.valorTotal | number:'1.2-2' }}</span>
+      </div>
+
     </div>
-    <button class="btn btn-primary btn-sm d-flex align-items-center" (click)="abrirAdicionarItem()">
-      <i class="bi bi-plus-circle me-1"></i> Adicionar Item
-    </button>
-  </ng-container>
-  <ng-template #semPedido>
-    <span>Nenhum pedido carregado</span>
-  </ng-template>
-</div>
+
+    <ng-template #semPedido>
+      <span class="text-muted fst-italic">Nenhum pedido carregado</span>
+    </ng-template>
   </div>
 </div>
+
+<div *ngIf="(pedidoAtual?.itens || []).length > 0" class="mt-4" style="padding-left: 20px; padding-right: 20px;" >
+
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Descrição</th>
+          <th class="text-end">Quantidade</th>
+          <th class="text-center">Tamanho</th>
+          <th class="text-end">Valor Unitário</th>
+          <th class="text-end">Total</th>
+          <th class="text-center">Imagem</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of pedidoAtual?.itens">
+          <td>{{ item.descricao }}</td>
+          <td class="text-end">{{ item.quantidade }}</td>
+          <td class="text-center">{{ item.tamanho || '-' }}</td>
+          <td class="text-end">R$ {{ item.valorUnitario | number:'1.2-2' }}</td>
+          <td class="text-end fw-semibold text-success">
+            R$ {{ (item.quantidade * item.valorUnitario) | number:'1.2-2' }}
+          </td>
+          <td class="text-center">
+            <button *ngIf="item.imagem"
+                    class="btn btn-sm btn-outline-primary"
+                    (click)="abrirImagem(item.imagem)">
+              <i class="bi bi-eye"></i>
+            </button>
+            <span *ngIf="!item.imagem" class="text-muted small">—</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="d-flex justify-content-center align-items-start" style="min-height: 60vh;">
+  <form [formGroup]="itemPedidoForm" novalidate class="container">
+    <h4 class="text-center mb-4">Cadastro de Item do Pedido</h4>
+
+    <div class="row">
+
+      <!-- Descrição -->
+      <div class="col-12 mb-3">
+        <label for="descricao" class="form-label">Descrição</label>
+        <input
+          id="descricao"
+          type="text"
+          class="form-control"
+          formControlName="descricao"
+          [class.is-valid]="itemPedidoForm.get('descricao')?.valid && itemPedidoForm.get('descricao')?.touched"
+          [class.is-invalid]="itemPedidoForm.get('descricao')?.invalid && itemPedidoForm.get('descricao')?.touched"
+          placeholder="Digite a descrição do item"/>
+        <div class="invalid-feedback" *ngIf="itemPedidoForm.get('descricao')?.invalid && itemPedidoForm.get('descricao')?.touched">
+          <div *ngIf="itemPedidoForm.get('descricao')?.errors?.['required']">Descrição é obrigatória</div>
+          <div *ngIf="itemPedidoForm.get('descricao')?.errors?.['maxlength']">Máximo 200 caracteres</div>
+        </div>
+      </div>
+
+      <!-- Quantidade e Tamanho -->
+      <div class="col-md-6 mb-3">
+        <label for="quantidade" class="form-label">Quantidade</label>
+        <input
+          id="quantidade"
+          type="number"
+          class="form-control"
+          formControlName="quantidade"
+          placeholder="Digite a quantidade"/>
+      </div>
+
+      <div class="col-md-6 mb-3">
+        <label for="tamanho" class="form-label">Tamanho</label>
+        <select
+          id="tamanho"
+          class="form-select"
+          formControlName="tamanho">
+          <option value="">Selecione...</option>
+          <option value="P">P</option>
+          <option value="M">M</option>
+          <option value="G">G</option>
+        </select>
+      </div>
+
+      <!-- Valor Unitário -->
+      <div class="col-md-6 mb-3">
+        <label for="valorUnitario" class="form-label">Valor Unitário</label>
+        <div class="input-group">
+          <span class="input-group-text">R$</span>
+          <input
+            id="valorUnitario"
+            type="text"
+            class="form-control text-start"
+            formControlName="valorUnitario"
+            (input)="apenasNumerosEVirgula($event)"/>
+        </div>
+      </div>
+
+      <!-- Data de Entrega -->
+      <div class="col-md-6 mb-3">
+        <label for="dataEntrega" class="form-label">Data de Entrega</label>
+        <input
+          id="dataEntrega"
+          type="date"
+          class="form-control"
+          formControlName="dataEntrega"/>
+      </div>
+
+      <!-- Upload de Imagem (opcional) -->
+      <div class="input-group" style="margin-bottom: 20px;">
+        <label class="input-group-text btn btn-outline-primary" for="fileInput">
+          <i class="bi bi-upload me-2"></i> Selecionar Imagem
+        </label>
+        <input
+          type="file"
+          id="fileInput"
+          class="d-none"
+          accept=".jpg,.jpeg,.png,.gif"
+          (change)="onFileSelected($event)"/>
+
+        <input
+          type="text"
+          class="form-control file-name-input"
+          placeholder="Nenhum arquivo selecionado"
+          readonly
+          [value]="arquivoSelecionadoNome || ''"/>
+      </div>
+
+  </div>
+    <div class="text-center">
+      <button type="button" class="btn btn-primary" (click)="adicionarItem()">
+        Adicionar Item
+      </button>
+    </div>
+  </form>
+</div>
+
+
+

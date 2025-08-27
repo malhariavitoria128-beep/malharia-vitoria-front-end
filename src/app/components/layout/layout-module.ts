@@ -8,12 +8,14 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmPedidoDialog } from './confirm-pedido-dialog/confirm-pedido-dialog';
+import { ModalImagemItem } from './modal-imagem-item/modal-imagem-item';
 
 @NgModule({
   declarations: [
     Navbar,
     ComfirmDeleteDialog,
-    ConfirmPedidoDialog
+    ConfirmPedidoDialog,
+    ModalImagemItem
   ],
   imports: [
     CommonModule,

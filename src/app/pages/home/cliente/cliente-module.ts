@@ -10,7 +10,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { CadastrarCliente } from './cadastrar-cliente/cadastrar-cliente';
-import { provideEnvironmentNgxMask } from 'ngx-mask';import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 import { AlterarCliente } from './alterar-cliente/alterar-cliente';
 
 

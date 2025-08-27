@@ -1,3 +1,4 @@
+import { PedidoService } from './../../../../services/pedido.service';
 import { AfterViewInit, Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { ClienteSalvar } from '../../../../core/models/cliente/cliente.model';
 import { MatTableDataSource } from '@angular/material/table';
@@ -27,7 +28,11 @@ export class ListarClientes implements OnInit, OnDestroy, AfterViewInit{
   @ViewChild('deleteModal') deleteModal!: TemplateRef<any>;
   private destroy$ = new Subject<void>();
 
-  constructor(private clienteService: ClienteService, private toastr: ToastrService, private dialog: MatDialog, private router: Router) {}
+  constructor(private clienteService: ClienteService,
+              private toastr: ToastrService,
+              private dialog: MatDialog,
+              private router: Router,
+              private pedidoService: PedidoService) {}
 
   ngOnInit(): void {
     this.carregarClientes();
@@ -103,20 +108,25 @@ export class ListarClientes implements OnInit, OnDestroy, AfterViewInit{
     this.router.navigate(['cliente/cadastrar-cliente']);
   }
 
-  novoPedido(clienteId: string, clienteNome: string) {
-  const dialogRef = this.dialog.open(ConfirmPedidoDialog, {
-     width: '450px',
+  novoPedido(clienteId: number, clienteNome: string) {
+    const dialogRef = this.dialog.open(ConfirmPedidoDialog, {
+      width: '450px',
       autoFocus: false,
       data: { userName: clienteNome },
       disableClose: true
   });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      this.router.navigate(['pedido/cadastrar-pedido', clienteId]);
-    }
-  });
-}
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.pedidoService.criarPedido(clienteId).subscribe({
+          next: (pedidoCriado) => {
+            this.router.navigate(['pedido/cadastrar-pedido', pedidoCriado.id]);
+          },
+          error: (err) => console.error('Erro ao criar pedido', err)
+        });
+      }
+    });
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();

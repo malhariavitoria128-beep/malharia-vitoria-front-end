@@ -4,8 +4,9 @@ import { Pedido } from './pedido/pedido';
 import { PedidoRoutingModule } from './pedido-routing.module';
 import { ListarPedidos } from './listar-pedidos/listar-pedidos';
 import { CadastrarPedido } from './cadastrar-pedido/cadastrar-pedido';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,11 @@ import { CadastrarPedido } from './cadastrar-pedido/cadastrar-pedido';
   ],
   imports: [
     CommonModule,
-    PedidoRoutingModule
-  ]
+    PedidoRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
+    NgxMaskDirective
+  ],
+  providers: [provideNgxMask({ /* opções de cfg */ })],
 })
 export class PedidoModule { }
