@@ -20,6 +20,8 @@
         </div>
       </div>
 
+
+
       <div class="pedido-valor">
         <label class="label-sup"><i class="bi bi-cash-coin text-success me-1"></i> Valor Total</label>
         <span>R$ {{ pedidoAtual.valorTotal | number:'1.2-2' }}</span>
@@ -140,6 +142,49 @@
           class="form-control"
           formControlName="dataEntrega"/>
       </div>
+
+   <!-- Prioridade -->
+      <div class="col-md-6 mb-3 d-flex align-items-center">
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="prioridade" formControlName="prioridade">
+          <label class="form-check-label fw-semibold" for="prioridade">Prioridade</label>
+        </div>
+      </div>
+
+      <!-- Processos opcionais -->
+      <div class="col-12 mb-3">
+        <label class="form-label">Processos adicionais</label>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="temPintura" formControlName="temPintura">
+              <label class="form-check-label" for="temPintura">Pintura</label>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="temBordado" formControlName="temBordado">
+              <label class="form-check-label" for="temBordado">Bordado</label>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="temDtf" formControlName="temDtf">
+              <label class="form-check-label" for="temDtf">DTF</label>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="temSilk" formControlName="temSilk">
+              <label class="form-check-label" for="temSilk">Silk</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <!-- Upload de Imagem (opcional) -->
       <div class="input-group" style="margin-bottom: 20px;">

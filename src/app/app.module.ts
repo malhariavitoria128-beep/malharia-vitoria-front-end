@@ -18,6 +18,7 @@ import { getPtBrPaginatorIntl } from './providers/paginator-pt-br';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import localePt from '@angular/common/locales/pt';
 import { FirebaseModule } from './core/firebase/firebase.module';
+
 registerLocaleData(localePt);
 
 @NgModule({

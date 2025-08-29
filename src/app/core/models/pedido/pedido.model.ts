@@ -1,10 +1,39 @@
-
 export interface ItemPedido {
   descricao: string;
   quantidade: number;
   tamanho?: string;
   valorUnitario: number;
-  imagem?: string; // Base64
+  imagem?: string;
+
+  prioridade?: "Sim" | "Não";
+  retirada?: "Sim" | "Não";
+  temSublimacao?: "Sim" | "Não";
+  statusSublimacao?: string;
+
+  temPintura?: "Sim" | "Não";
+  statusPintura?: string;
+
+  temBordado?: "Sim" | "Não";
+  statusBordado?: string;
+
+  temDtf?: "Sim" | "Não";
+  statusDtf?: string;
+
+  temSilk?: "Sim" | "Não";
+  statusSilk?: string;
+
+  // 🔹 Etapas obrigatórias com marcador
+  temCorte?: "Sim" | "Não";
+  statusCorte?: string;
+
+  temCostura?: "Sim" | "Não";
+  statusCostura?: string;
+
+  temDobragem?: "Sim" | "Não";
+  statusDobragem?: string;
+
+  temConferencia?: "Sim" | "Não";
+  statusConferencia?: string;
 }
 
 export interface Pedido {

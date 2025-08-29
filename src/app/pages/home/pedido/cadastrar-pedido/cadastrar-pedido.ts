@@ -36,16 +36,38 @@ export class CadastrarPedido {
     this.inicializarForm();
   }
 
-  inicializarForm() {
-    this.itemPedidoForm = this.fb.group({
-      descricao: ['', [Validators.required, Validators.maxLength(200)]],
-      quantidade: [''],
-      tamanho: [''],
-      valorUnitario: [''],
-      dataEntrega: [''],
-      imagem: [null] // opcional
-    });
-  }
+inicializarForm() {
+  this.itemPedidoForm = this.fb.group({
+    descricao: ['', [Validators.required, Validators.maxLength(200)]],
+    quantidade: ['', [Validators.required, Validators.min(1)]],
+    tamanho: [''],
+    valorUnitario: ['', Validators.required],
+    dataEntrega: [''],
+    imagem: [null],
+
+    // 🔹 campos adicionais
+    prioridade: [false],
+
+    temPintura: [false],
+    statusPintura: ['Não iniciado'],
+
+    temBordado: [false],
+    statusBordado: ['Não iniciado'],
+
+    temDtf: [false],
+    statusDtf: ['Não iniciado'],
+
+    temSilk: [false],
+    statusSilk: ['Não iniciado'],
+
+    // sempre obrigatórios
+    statusCorte: ['Não iniciado'],
+    statusCostura: ['Não iniciado'],
+    statusDobragem: ['Não iniciado'],
+    statusConferencia: ['Não iniciado']
+  });
+}
+
 
   carregarPedido() {
     this.pedidoService.getPedidoById(this.idPedido).subscribe({
@@ -75,7 +97,7 @@ onFileSelected(event: any) {
   }
 }
 adicionarItem() {
-  // Marca todos os campos como tocados e sujos
+  // Marca todos os campos do form como tocados/dirty
   Object.keys(this.itemPedidoForm.controls).forEach(key => {
     const control = this.itemPedidoForm.get(key);
     control?.markAsTouched();
@@ -92,19 +114,39 @@ adicionarItem() {
     return;
   }
 
+  // Pega os valores que realmente existem no form
+  const fv = this.itemPedidoForm.value;
+
   const item: ItemPedido = {
-    descricao: this.itemPedidoForm.get('descricao')?.value,
-    quantidade: this.itemPedidoForm.get('quantidade')?.value,
-    tamanho: this.itemPedidoForm.get('tamanho')?.value,
-    valorUnitario: parseFloat(
-      (this.itemPedidoForm.get('valorUnitario')?.value || 0).toString().replace(',', '.')
-    ),
-    imagem: this.itemPedidoForm.get('imagem')?.value
+    descricao: fv.descricao,
+    quantidade: fv.quantidade,
+    tamanho: fv.tamanho,
+    valorUnitario: parseFloat((fv.valorUnitario || 0).toString().replace(',', '.')),
+    imagem: fv.imagem,
+
+    prioridade: this.booleanParaSimNao(fv.prioridade),
+
+    temPintura: this.booleanParaSimNao(fv.temPintura),
+    statusPintura: "Não iniciado",
+
+    temBordado: this.booleanParaSimNao(fv.temBordado),
+    statusBordado: "Não iniciado",
+
+    temDtf: this.booleanParaSimNao(fv.temDtf),
+    statusDtf: "Não iniciado",
+
+    temSilk: this.booleanParaSimNao(fv.temSilk),
+    statusSilk: "Não iniciado",
+
+    // Etapas obrigatórias fixas
+    statusCorte: "Não iniciado",
+    statusCostura: "Não iniciado",
+    statusDobragem: "Não iniciado",
+    statusConferencia: "Não iniciado"
   };
 
   this.pedidoService.adicionarItens(this.idPedido, item).subscribe({
     next: () => {
-      // Se o campo dataEntrega estiver preenchido, envia ao backend
       const dataEntregaValue = this.itemPedidoForm.get('dataEntrega')?.value;
       if (dataEntregaValue) {
         this.pedidoService.atualizarDataEntrega(this.idPedido, dataEntregaValue)
@@ -115,18 +157,18 @@ adicionarItem() {
       }
 
       this.toastr.success('Item adicionado com sucesso!', 'Sucesso');
-
-      // limpa o formulário
       this.itemPedidoForm.reset();
       this.arquivoSelecionadoNome = '';
-
-      // recarrega o pedido
       this.carregarPedido();
     },
     error: (err) => {
       this.toastr.error(err?.error?.message || 'Erro ao salvar item', 'Erro');
     }
   });
+}
+
+private booleanParaSimNao(valor?: boolean): "Sim" | "Não" {
+  return valor ? "Sim" : "Não";
 }
 
 

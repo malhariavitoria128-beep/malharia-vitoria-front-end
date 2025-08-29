@@ -21,6 +21,10 @@ export class PedidoService {
     return this.http.get<Pedido>(`${this.baseUrl}Pedido/${id}`);
   }
 
+  getPedidos(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.baseUrl}Pedido`);
+  }
+
   adicionarItens(pedidoId: number, itens: ItemPedido): Observable<any> {
     return this.http.put(`${this.baseUrl}Pedido/${pedidoId}/adicionar-item`, itens);
   }
@@ -28,7 +32,7 @@ export class PedidoService {
 atualizarDataEntrega(pedidoId: number, dataEntrega: string): Observable<any> {
   const isoDate = new Date(dataEntrega).toISOString();
     return this.http.put(`${this.baseUrl}Pedido/${pedidoId}/data-entrega`,
-      `"${isoDate}"`,  
+      `"${isoDate}"`,
       {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'

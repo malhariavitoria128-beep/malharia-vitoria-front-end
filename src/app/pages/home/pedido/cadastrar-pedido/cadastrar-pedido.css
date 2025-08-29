@@ -118,6 +118,10 @@
   max-height: 100vh;
 }
 
+form.container {
+  margin-top: 2rem; /* ou 32px, ajuste como quiser */
+}
+
 @media (max-width: 768px) {
   .label-sup {
     display: none;
