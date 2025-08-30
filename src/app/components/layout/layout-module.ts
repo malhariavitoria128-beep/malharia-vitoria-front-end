@@ -9,13 +9,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmPedidoDialog } from './confirm-pedido-dialog/confirm-pedido-dialog';
 import { ModalImagemItem } from './modal-imagem-item/modal-imagem-item';
+import { ModalAtualizarStatusItem } from './modal-atualizar-status-item/modal-atualizar-status-item';
 
 @NgModule({
   declarations: [
     Navbar,
     ComfirmDeleteDialog,
     ConfirmPedidoDialog,
-    ModalImagemItem
+    ModalImagemItem,
+    ModalAtualizarStatusItem
   ],
   imports: [
     CommonModule,

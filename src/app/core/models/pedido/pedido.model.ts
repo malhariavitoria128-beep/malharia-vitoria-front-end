@@ -34,6 +34,9 @@ export interface ItemPedido {
 
   temConferencia?: "Sim" | "Não";
   statusConferencia?: string;
+
+    temRetirada?: "Sim" | "Não";
+  statusRetirada?: string;
 }
 
 export interface Pedido {

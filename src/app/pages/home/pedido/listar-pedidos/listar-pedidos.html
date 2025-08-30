@@ -1,4 +1,4 @@
-<div class="page-container">
+<div class="page-container" style="padding: 3%;">
   <div class="row g-3">
     <div class="col-12" *ngFor="let pedido of dataSource">
 
@@ -9,34 +9,61 @@
           <!-- Cabeçalho com informações principais -->
           <div class="d-flex justify-content-between align-items-start mb-3">
             <div>
-              <h5 class="card-title mb-1 text-primary fw-bold">{{pedido.numeroPedido}} - {{pedido.nomeCliente}}</h5>
-              <div class="d-flex flex-wrap gap-3 text-muted small">
-                <span><i class="bi bi-calendar-event me-1"></i> {{pedido.dataPedido | date:'dd/MM/yyyy HH:mm'}}</span>
-                <span><i class="bi bi-truck me-1"></i> {{pedido.dataEntrega ? (pedido.dataEntrega | date:'dd/MM/yyyy') : 'Entrega não definida'}}</span>
+              <!-- Número do Pedido e Cliente -->
+              <div class="mb-2">
+                <span class="badge bg-light text-primary border rounded-pill me-2 px-2 py-1 fs-6">
+                  <strong style="margin-right: 10px;">Pedido:</strong> {{pedido.numeroPedido}}
+                </span>
+                <span class="badge bg-light text-primary border rounded-pill px-2 py-1 fs-6">
+                  <strong style="margin-right: 10px;">Cliente:</strong> {{pedido.nomeCliente}}
+                </span>
+              </div>
+
+              <!-- Datas -->
+              <div class="d-flex flex-wrap gap-2 text-muted small">
+                <span class="badge bg-light text-dark border px-2 py-1 fs-6" style="border-radius: 0.25rem;">
+                  <strong style="margin-right: 10px;">Data do Pedido:</strong>
+                  <i class="bi bi-calendar-event ms-1"></i>
+                  {{pedido.dataPedido | date:'dd/MM/yyyy HH:mm'}}
+                </span>
+                <span class="badge bg-light text-dark border px-2 py-1 fs-6" style="border-radius: 0.25rem;">
+                  <strong style="margin-right: 10px;">Data da Entrega:</strong>
+                  <i class="bi bi-truck ms-1"></i>
+                  {{pedido.dataEntrega ? (pedido.dataEntrega | date:'dd/MM/yyyy') : 'Não definida'}}
+                </span>
               </div>
             </div>
+
             <div class="text-end">
-              <span class="badge status-badge" [ngClass]="{
-                'bg-secondary': pedido.status === 'Não iniciado',
-                'bg-warning': pedido.status === 'Em produção',
-                'bg-info': pedido.status === 'Em espera',
-                'bg-success': pedido.status === 'Concluído',
-                'bg-danger': pedido.status === 'Cancelado'
+              <span class="badge status-badge" style="font-size: 13px; color: white; font-weight: 500;" [ngClass]="{
+                'bg-info': pedido.status === 'Não iniciado',
+                'bg-primary': pedido.status === 'Em produção',
+                'bg-success': pedido.status === 'Concluído'
               }">{{pedido.status}}</span>
             </div>
           </div>
 
-          <!-- Separador -->
           <hr class="my-2">
 
           <!-- Itens do Pedido -->
           <div *ngFor="let item of pedido.itens" class="pedido-item mb-3 p-3 bg-light rounded">
             <div class="d-flex justify-content-between align-items-center">
               <div class="flex-grow-1">
-                <h6 class="mb-1 fw-semibold">{{item.descricao}} <span class="text-muted">| Tamanho: {{item.tamanho}} | Qtd: {{item.quantidade}}</span></h6>
+                <!-- Descrição, tamanho e quantidade -->
+                <h6 class="mb-1 fw-semibold">
+                  <span class="badge bg-light text-dark border rounded-pill px-2 py-1 me-1">
+                    <span style="font-size: 15px; margin-right: 10px;">Descrição:</span><span style="font-size: 15px;">{{item.descricao}}</span>
+                  </span>
+                  <span class="badge bg-light text-dark border rounded-pill px-2 py-1 me-1">
+                    <span style="font-size: 15px; margin-right: 10px;">Tamanho:</span><span style="font-size: 15px;">{{item.tamanho}}</span>
+                  </span>
+                  <span class="badge bg-light text-dark border rounded-pill px-2 py-1">
+                    <span style="font-size: 15px; margin-right: 10px;">Qtd:</span><span style="font-size: 15px;">{{item.quantidade}}</span>
+                  </span>
+                </h6>
 
                 <!-- Status dos processos -->
-                <div class="d-flex flex-wrap gap-2 mt-2">
+                <!-- <div class="d-flex flex-wrap gap-2 mt-2">
                   <ng-container *ngFor="let s of [
                     { label: 'Pintura', status: item.statusPintura, tem: item.temPintura },
                     { label: 'Bordado', status: item.statusBordado, tem: item.temBordado },
@@ -45,22 +72,40 @@
                     { label: 'Corte', status: item.statusCorte, tem: item.temCorte },
                     { label: 'Costura', status: item.statusCostura, tem: item.temCostura },
                     { label: 'Dobragem', status: item.statusDobragem, tem: item.temDobragem },
-                    { label: 'Conferência', status: item.statusConferencia, tem: item.temConferencia }
+                    { label: 'Conferência', status: item.statusConferencia, tem: item.temConferencia },
+                    { label: 'Retirada', status: item.statusRetirada, tem: item.temRetirada }
                   ]">
-                    <span
-                      *ngIf="s.tem === 'Sim'"
-                      class="badge status-badge"
+                    <span *ngIf="s.tem === 'Sim'" class="badge status-badge" style="font-size: 13px; color: white; font-weight: 500;"
                       [ngClass]="{
-                        'bg-secondary': s.status === 'Não iniciado',
-                        'bg-warning': s.status === 'Em andamento',
-                        'bg-success': s.status === 'Concluído',
-                        'bg-info': s.status === 'Em espera',
-                        'bg-danger': s.status === 'Cancelado'
+                        'bg-info': s.status === 'Não iniciado',
+                        'bg-primary': s.status === 'Em andamento',
+                        'bg-success': s.status === 'Concluído'
                       }">
                       {{s.label}}: {{s.status}}
                     </span>
                   </ng-container>
-                </div>
+                </div> -->
+
+<div class="d-flex flex-wrap gap-2 mt-2">
+  <ng-container *ngFor="let s of getEtapas(item)">
+    <ng-container *ngIf="s.tem === 'Sim'">
+      <span
+        class="badge status-badge"
+        [ngClass]="{
+          'bg-info': s.status === 'Não iniciado',
+          'bg-primary': s.status === 'Em andamento',
+          'bg-success': s.status === 'Concluído'
+        }"
+        style="font-size: 13px; color: white; font-weight: 500; cursor: pointer;"
+        (click)="abrirModalStatus(item, s)">
+        {{ s.label }}: {{ s.status }}
+      </span>
+    </ng-container>
+  </ng-container>
+</div>
+
+
+
               </div>
 
               <div class="ms-3">
@@ -69,17 +114,16 @@
                 </button>
               </div>
             </div>
-          </div>
 
-          <!-- Rodapé com ações e badge Prioridade -->
-        <div class="d-flex justify-content-between align-items-center pt-2 border-top gap-2">
-  <!-- Badge Prioridade do lado esquerdo -->
-  <span *ngIf="temPrioridade(pedido)" class="badge priority-badge bg-danger">
+            <!-- Rodapé do item -->
+         <div class="d-flex align-items-center pt-2 border-top gap-2 mt-2">
+  <!-- Badge de prioridade à esquerda -->
+  <span *ngIf="item.prioridade === 'Sim'" class="badge priority-badge bg-danger">
     <i class="bi bi-exclamation-circle me-1"></i>Prioridade
   </span>
 
-  <!-- Botões do lado direito -->
-  <div class="d-flex gap-2">
+  <!-- Botões sempre à direita -->
+  <div class="d-flex gap-2 ms-auto">
     <button class="btn btn-sm btn-outline-secondary">
       <i class="bi bi-info-circle me-1"></i>Detalhes
     </button>
@@ -88,6 +132,7 @@
     </button>
   </div>
 </div>
+          </div>
 
         </div>
       </div>

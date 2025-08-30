@@ -41,4 +41,8 @@ atualizarDataEntrega(pedidoId: number, dataEntrega: string): Observable<any> {
     );
   }
 
+atualizarStatusItem(itemId: number, dto: { campo: string, valor: string }) {
+  return this.http.put(`${this.baseUrl}Pedido/itens/${itemId}/atualizar`, dto);
+}
+
 }
