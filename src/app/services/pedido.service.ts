@@ -25,6 +25,14 @@ export class PedidoService {
     return this.http.get<Pedido[]>(`${this.baseUrl}Pedido`);
   }
 
+  getPedidosConcluidos(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.baseUrl}Pedido/concluidos`);
+  }
+
+  getPedidosNaoConcluidos(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.baseUrl}Pedido/nao-concluidos`);
+  }
+
   adicionarItens(pedidoId: number, itens: ItemPedido): Observable<any> {
     return this.http.put(`${this.baseUrl}Pedido/${pedidoId}/adicionar-item`, itens);
   }

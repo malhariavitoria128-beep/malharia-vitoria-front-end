@@ -15,6 +15,7 @@ import { ModalAtualizarStatusItem } from '../../../../components/layout/modal-at
 })
 export class ListarPedidos {
     dataSource: Pedido[] = [];
+    filtroSelecionado: string = 'pendentes';
 
 getEtapas(item: any) {
   return [
@@ -33,18 +34,35 @@ getEtapas(item: any) {
   constructor(private pedidoService: PedidoService, private sanitizer: DomSanitizer, private dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.carregarPedidos();
+    this.carregarPedidosNaoConcluidos();
 
 
 
   }
 
-  carregarPedidos(): void {
-    this.pedidoService.getPedidos().subscribe({
-      next: pedidos => this.dataSource = pedidos,
-      error: () => console.error('Erro ao carregar pedidos')
-    });
-  }
+carregarPedidos(): void {
+  this.filtroSelecionado = 'todos';
+  this.pedidoService.getPedidos().subscribe({
+    next: pedidos => this.dataSource = pedidos,
+    error: () => console.error('Erro ao carregar todos os pedidos')
+  });
+}
+
+carregarPedidosConcluidos(): void {
+  this.filtroSelecionado = 'concluidos';
+  this.pedidoService.getPedidosConcluidos().subscribe({
+    next: pedidos => this.dataSource = pedidos,
+    error: () => console.error('Erro ao carregar pedidos concluídos')
+  });
+}
+
+carregarPedidosNaoConcluidos(): void {
+  this.filtroSelecionado = 'pendentes';
+  this.pedidoService.getPedidosNaoConcluidos().subscribe({
+    next: pedidos => this.dataSource = pedidos,
+    error: () => console.error('Erro ao carregar pedidos não concluídos')
+  });
+}
 
    temPrioridade(pedido: Pedido): boolean {
     return pedido.itens.some(i => i.prioridade === 'Sim');
@@ -89,7 +107,7 @@ atualizarStatus(item: any, campo: string, valor: string) {
   this.pedidoService.atualizarStatusItem(item.id, dto).subscribe({
     next: () => {
       console.log('Status atualizado!');
-      this.carregarPedidos(); // recarrega a lista para atualizar visual
+      this.carregarPedidosNaoConcluidos(); // recarrega a lista para atualizar visual
     },
     error: err => console.error(err)
   });

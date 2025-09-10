@@ -1,3 +1,57 @@
+<div class="container py-2" style="margin-top: 100px;">
+  <div class="row g-3 justify-content-center">
+
+    <!-- Pendentes -->
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card text-white text-center small-card"
+           role="button"
+           [ngClass]="{
+             'bg-primary': filtroSelecionado === 'pendentes',
+             'bg-info': filtroSelecionado !== 'pendentes'
+           }"
+           (click)="carregarPedidosNaoConcluidos()">
+        <div class="card-body">
+          <h5 class="card-title">Pendentes</h5>
+          <p class="card-text">Pedidos ainda não concluídos</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Concluídos -->
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card text-white text-center small-card"
+           role="button"
+           [ngClass]="{
+             'bg-primary': filtroSelecionado === 'concluidos',
+             'bg-info': filtroSelecionado !== 'concluidos'
+           }"
+           (click)="carregarPedidosConcluidos()">
+        <div class="card-body">
+          <h5 class="card-title">Concluídos</h5>
+          <p class="card-text">Pedidos finalizados</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Todos -->
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card text-white text-center small-card"
+           role="button"
+           [ngClass]="{
+             'bg-primary': filtroSelecionado === 'todos',
+             'bg-info': filtroSelecionado !== 'todos'
+           }"
+           (click)="carregarPedidos()">
+        <div class="card-body">
+          <h5 class="card-title">Todos</h5>
+          <p class="card-text">Todos os pedidos</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <div class="page-container" style="padding: 3%;">
   <div class="row g-3">
     <div class="col-12" *ngFor="let pedido of dataSource">
@@ -61,53 +115,24 @@
                     <span style="font-size: 15px; margin-right: 10px;">Qtd:</span><span style="font-size: 15px;">{{item.quantidade}}</span>
                   </span>
                 </h6>
-
-                <!-- Status dos processos -->
-                <!-- <div class="d-flex flex-wrap gap-2 mt-2">
-                  <ng-container *ngFor="let s of [
-                    { label: 'Pintura', status: item.statusPintura, tem: item.temPintura },
-                    { label: 'Bordado', status: item.statusBordado, tem: item.temBordado },
-                    { label: 'DTF', status: item.statusDtf, tem: item.temDtf },
-                    { label: 'Silk', status: item.statusSilk, tem: item.temSilk },
-                    { label: 'Corte', status: item.statusCorte, tem: item.temCorte },
-                    { label: 'Costura', status: item.statusCostura, tem: item.temCostura },
-                    { label: 'Dobragem', status: item.statusDobragem, tem: item.temDobragem },
-                    { label: 'Conferência', status: item.statusConferencia, tem: item.temConferencia },
-                    { label: 'Retirada', status: item.statusRetirada, tem: item.temRetirada }
-                  ]">
-                    <span *ngIf="s.tem === 'Sim'" class="badge status-badge" style="font-size: 13px; color: white; font-weight: 500;"
-                      [ngClass]="{
-                        'bg-info': s.status === 'Não iniciado',
-                        'bg-primary': s.status === 'Em andamento',
-                        'bg-success': s.status === 'Concluído'
-                      }">
-                      {{s.label}}: {{s.status}}
-                    </span>
-                  </ng-container>
-                </div> -->
-
-<div class="d-flex flex-wrap gap-2 mt-2">
-  <ng-container *ngFor="let s of getEtapas(item)">
-    <ng-container *ngIf="s.tem === 'Sim'">
-      <span
-        class="badge status-badge"
-        [ngClass]="{
-          'bg-info': s.status === 'Não iniciado',
-          'bg-primary': s.status === 'Em andamento',
-          'bg-success': s.status === 'Concluído'
-        }"
-        style="font-size: 13px; color: white; font-weight: 500; cursor: pointer;"
-        (click)="abrirModalStatus(item, s)">
-        {{ s.label }}: {{ s.status }}
-      </span>
-    </ng-container>
-  </ng-container>
-</div>
-
-
-
+                  <div class="d-flex flex-wrap gap-2 mt-2">
+                    <ng-container *ngFor="let s of getEtapas(item)">
+                      <ng-container *ngIf="s.tem === 'Sim'">
+                        <span
+                          class="badge status-badge"
+                          [ngClass]="{
+                            'bg-info': s.status === 'Não iniciado',
+                            'bg-primary': s.status === 'Em andamento',
+                            'bg-success': s.status === 'Concluído'
+                          }"
+                          style="font-size: 13px; color: white; font-weight: 500; cursor: pointer;"
+                          (click)="abrirModalStatus(item, s)">
+                          {{ s.label }}: {{ s.status }}
+                        </span>
+                      </ng-container>
+                    </ng-container>
+                  </div>
               </div>
-
               <div class="ms-3">
                 <button *ngIf="item.imagem" class="btn btn-sm btn-outline-primary" (click)="abrirImagem(item.imagem)">
                   <i class="bi bi-image me-1"></i>Imagem
@@ -117,21 +142,21 @@
 
             <!-- Rodapé do item -->
          <div class="d-flex align-items-center pt-2 border-top gap-2 mt-2">
-  <!-- Badge de prioridade à esquerda -->
-  <span *ngIf="item.prioridade === 'Sim'" class="badge priority-badge bg-danger">
-    <i class="bi bi-exclamation-circle me-1"></i>Prioridade
-  </span>
+          <!-- Badge de prioridade à esquerda -->
+          <span *ngIf="item.prioridade === 'Sim'" class="badge priority-badge bg-danger">
+            <i class="bi bi-exclamation-circle me-1"></i>Prioridade
+          </span>
 
-  <!-- Botões sempre à direita -->
-  <div class="d-flex gap-2 ms-auto">
-    <button class="btn btn-sm btn-outline-secondary">
-      <i class="bi bi-info-circle me-1"></i>Detalhes
-    </button>
-    <button class="btn btn-sm btn-primary">
-      <i class="bi bi-pencil-square me-1"></i>Atualizar
-    </button>
-  </div>
-</div>
+          <!-- Botões sempre à direita -->
+          <div class="d-flex gap-2 ms-auto">
+            <button class="btn btn-sm btn-outline-secondary">
+              <i class="bi bi-info-circle me-1"></i>Detalhes
+            </button>
+            <button class="btn btn-sm btn-primary">
+              <i class="bi bi-pencil-square me-1"></i>Atualizar
+            </button>
+          </div>
+        </div>
           </div>
 
         </div>

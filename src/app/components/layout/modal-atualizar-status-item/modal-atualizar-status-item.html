@@ -3,14 +3,14 @@
 <div mat-dialog-content class="d-flex flex-column align-items-center gap-3 py-2">
   <p>Escolha o status para <strong>{{data.label}}</strong>:</p>
 
-  <div class="d-flex flex-column gap-2 w-100">
-    <button mat-raised-button color="warn" class="w-100" (click)="selecionar('Não iniciado')">
+  <div class="d-flex flex-column gap-2 w-100" style="padding: 5%;">
+    <button type="button" class="btn btn-info" (click)="selecionar('Não iniciado')">
       Não iniciado
     </button>
-    <button mat-raised-button color="primary" class="w-100" (click)="selecionar('Em andamento')">
+    <button type="button" class="btn btn-primary" (click)="selecionar('Em andamento')">
       Em andamento
     </button>
-    <button mat-raised-button color="accent" class="w-100" (click)="selecionar('Concluído')">
+    <button type="button" class="btn btn-success" style="margin-bottom: 5%;" (click)="selecionar('Concluído')">
       Concluído
     </button>
   </div>
